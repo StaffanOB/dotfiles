@@ -76,6 +76,20 @@ echo
 echo -e "${BLUE}Tmux:${NC}"
 create_symlink "$SCRIPT_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 create_symlink "$SCRIPT_DIR/tmux" "$HOME/.tmux"
+
+# Install tpm (Tmux Plugin Manager) if not present
+if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+    echo -e "${YELLOW}Installing tmux plugin manager (tpm)...${NC}"
+    if [[ "$DRY_RUN" == false ]]; then
+        git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+        echo -e "${GREEN}✓ tpm installed${NC}"
+        echo -e "${YELLOW}  Run 'Prefix + I' in tmux to install plugins${NC}"
+    else
+        echo -e "${GREEN}✓ Would install tpm to $HOME/.tmux/plugins/tpm${NC}"
+    fi
+else
+    echo -e "${BLUE}→ tpm already installed${NC}"
+fi
 echo
 
 # Shell
