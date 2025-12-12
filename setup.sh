@@ -16,12 +16,153 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 
-# Dry run flag
+# Flags
 DRY_RUN=false
-if [[ "$1" == "--dry-run" ]]; then
-    DRY_RUN=true
+INSTALL_DEPS=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        --install-deps)
+            INSTALL_DEPS=true
+            shift
+            ;;
+        *)
+            echo -e "${RED}Unknown option: $1${NC}"
+            echo "Usage: $0 [--dry-run] [--install-deps]"
+            exit 1
+            ;;
+    esac
+done
+
+if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}Running in DRY RUN mode - no changes will be made${NC}\n"
 fi
+
+# Required dependencies (core)
+REQUIRED_APPS=(
+    "vim:vim"
+    "tmux:tmux"
+    "git:git"
+    "curl:curl"
+)
+
+# Optional dependencies (enhance functionality)
+OPTIONAL_APPS=(
+    "fzf:fzf"
+    "fd:fd-find"
+    "rg:ripgrep"
+    "zoxide:zoxide"
+)
+
+# Check if running Debian/Ubuntu
+check_distro() {
+    if [[ -f /etc/os-release ]]; then
+        . /etc/os-release
+        if [[ "$ID" == "debian" ]] || [[ "$ID" == "ubuntu" ]]; then
+            return 0
+        fi
+    fi
+    return 1
+}
+
+# Check if a command exists
+command_exists() {
+    command -v "$1" &> /dev/null
+}
+
+# Check dependencies
+check_dependencies() {
+    local missing_required=()
+    local missing_optional=()
+    
+    echo -e "${BLUE}=== Checking Dependencies ===${NC}\n"
+    
+    # Check required apps
+    echo -e "${BLUE}Required applications:${NC}"
+    for app_pair in "${REQUIRED_APPS[@]}"; do
+        IFS=':' read -r cmd pkg <<< "$app_pair"
+        if command_exists "$cmd"; then
+            echo -e "${GREEN}✓ $cmd installed${NC}"
+        else
+            echo -e "${RED}✗ $cmd not found${NC}"
+            missing_required+=("$pkg")
+        fi
+    done
+    
+    echo
+    
+    # Check optional apps
+    echo -e "${BLUE}Optional applications:${NC}"
+    for app_pair in "${OPTIONAL_APPS[@]}"; do
+        IFS=':' read -r cmd pkg <<< "$app_pair"
+        if command_exists "$cmd"; then
+            echo -e "${GREEN}✓ $cmd installed${NC}"
+        else
+            echo -e "${YELLOW}○ $cmd not found (optional)${NC}"
+            missing_optional+=("$pkg")
+        fi
+    done
+    
+    echo
+    
+    # Handle missing required apps
+    if [[ ${#missing_required[@]} -gt 0 ]]; then
+        echo -e "${RED}Missing required applications: ${missing_required[*]}${NC}"
+        
+        if check_distro; then
+            if [[ "$INSTALL_DEPS" == true ]]; then
+                install_dependencies "${missing_required[@]}"
+            else
+                echo -e "${YELLOW}Run with --install-deps flag to install automatically${NC}"
+                echo -e "${YELLOW}Or manually install with:${NC}"
+                echo -e "  sudo apt update && sudo apt install -y ${missing_required[*]}"
+                echo
+                read -p "Install missing dependencies now? (y/N): " -n 1 -r
+                echo
+                if [[ $REPLY =~ ^[Yy]$ ]]; then
+                    install_dependencies "${missing_required[@]}"
+                else
+                    echo -e "${RED}Cannot proceed without required dependencies${NC}"
+                    exit 1
+                fi
+            fi
+        else
+            echo -e "${RED}Not running on Debian/Ubuntu. Please install dependencies manually.${NC}"
+            exit 1
+        fi
+    fi
+    
+    # Handle missing optional apps
+    if [[ ${#missing_optional[@]} -gt 0 ]]; then
+        echo -e "${YELLOW}Missing optional applications: ${missing_optional[*]}${NC}"
+        echo -e "${YELLOW}These enhance functionality but are not required${NC}"
+        echo -e "${YELLOW}Install with:${NC}"
+        echo -e "  sudo apt install -y ${missing_optional[*]}"
+        echo
+    fi
+}
+
+# Install dependencies
+install_dependencies() {
+    local packages=("$@")
+    
+    echo -e "${BLUE}Installing dependencies...${NC}"
+    
+    if [[ "$DRY_RUN" == true ]]; then
+        echo -e "${YELLOW}Would run: sudo apt update && sudo apt install -y ${packages[*]}${NC}"
+        return 0
+    fi
+    
+    sudo apt update
+    sudo apt install -y "${packages[@]}"
+    
+    echo -e "${GREEN}✓ Dependencies installed${NC}\n"
+}
 
 # Function to create symlink
 create_symlink() {
@@ -65,6 +206,11 @@ create_symlink() {
 }
 
 echo -e "${BLUE}=== Dotfiles Setup ===${NC}\n"
+
+# Check dependencies first
+check_dependencies
+
+echo -e "${BLUE}=== Creating Symlinks ===${NC}\n"
 
 # Vim
 echo -e "${BLUE}Vim:${NC}"
