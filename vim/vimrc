@@ -1,0 +1,283 @@
+set encoding=utf-8
+set nocompatible                               " No vi-compatible
+autocmd! bufwritepost .vimrc source %          " Automatic reload VIMRC
+
+" ------------------------------------------------------------------------------
+" PLUGIN CONFIGURATIONS
+" Vim-plug initialization
+let vim_plug_just_installed = 0
+let vim_plug_path = expand('~/.vim/autoload/plug.vim')
+
+if !filereadable(vim_plug_path)
+    echo "Installing Vim-plug"
+    echo ""
+
+    silent !mkdir -p ~/.vim/autoload
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    let vim_plug_just_installed = 1
+endif
+
+" Manually load vim-plug the first time
+if vim_plug_just_installed
+    :execute 'source '.fnameescape(vim_plug_path)
+endif
+
+" Activate plugins
+call plug#begin("~/.vim/plugins")
+
+" -----------------------------------------------------------------------------
+" PLUGIN LIST
+
+" General
+Plug 'vimwiki/vimwiki'                                  " Markdown wiki
+Plug 'ap/vim-buftabline'                                " Helps manage buffers
+Plug 'vim-airline/vim-airline'                          " VIM Status bar
+Plug 'vim-airline/vim-airline-themes'
+Plug 'mhinz/vim-startify'                               " VIM Start Page
+Plug 'christoomey/vim-tmux-navigator'                   " TMUX/VIM Nav integration
+Plug 'tpope/vim-commentary'                             " Commenting
+Plug 'archernar/vim-flashcard'                          " Flashcards
+
+" Editing
+Plug 'majutsushi/tagbar'                                " Class outline viewer
+Plug 'tpope/vim-sensible'                               " See changes to the file
+Plug 'tpope/vim-unimpaired'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+
+" Searching
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+
+" Languages
+Plug 'ap/vim-css-color'
+
+" Python
+Plug 'vim-scripts/indentpython.vim'
+Plug 'dense-analysis/ale'
+Plug 'nvie/vim-flake8'
+Plug 'sansyrox/vim-python-virtualenv'
+
+Plug 'mfukar/robotframework-vim'
+
+" Javascrip
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'jparise/vim-graphql'
+
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+
+" Code complete
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'github/copilot.vim'
+
+
+" Themes and colors
+"Plug 'lilydjwg/colorizer'               " Colorizes the background of color codes
+Plug 'joshdick/onedark.vim'
+
+call plug#end()
+
+colorscheme onedark
+
+set noshowmode
+
+
+" ------------------------------------------------------------------------------
+" Install plugins the first time vim runs
+if vim_plug_just_installed
+    echo "Installing Bundles, please ignore key map error messages"
+    :PlugInstall
+endif
+
+" ------------------------------------------------------------------------------
+" PLUGINS
+" ------------------------------------------------------------------------------
+source ~/.vim/vimrc_fzf
+source ~/.vim/vimrc_coc
+source ~/.vim/vimrc_ale
+source ~/.vim/vimrc_tagbar
+source ~/.vim/vimrc_airline
+source ~/.vim/vimrc_ultisnippets
+source ~/.vim/vimrc_vimwiki
+source ~/.vim/vimrc_copilot
+source ~/.vim/vimrc_flashcard
+
+
+" ------------------------------------------------------------------------------
+" GENERAL VIM CONFIGURATION
+" Setup dirs for general vim files
+set directory=~/tmp/vim     	                          " Directory to place swap files in
+if !isdirectory(&directory)
+    call mkdir(&directory, "p")
+endif
+
+set backup                                              " Make backup files
+set backupdir=~/.vim/backups 	                          " Where to put backup files
+if !isdirectory(&backupdir)
+    call mkdir(&backupdir, "p")
+endif
+
+set undofile                                            " Persistent undos - undo after you re-open the file
+set undodir=~/tmp/vim/undos
+if !isdirectory(&undodir)
+    call mkdir(&undodir, "p")
+endif
+
+set viminfo+=n~/tmp/.viminfo
+
+" Use 256 colors when possible
+if has('gui_running') || (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256')
+    if !has('gui_running')
+        let &t_Co = 256
+    endif
+endif
+
+" Colors and theme
+let &colorcolumn='81'                           " Set a marker at colum 80
+highlight ColorColumn ctermbg=233
+
+
+" ------------------------------------------------------------------------------
+" GENERAL EDIT CONFIGURATION
+filetype plugin on	       " Allow plugins by file type (required for plugins!)
+filetype indent on
+filetype on
+syntax on			       " Syntax highlight on
+
+set ls=2                   " Always show status bar
+set nu			           " Show line numbers
+set rnu                    " Relative numbers
+
+ca w!! w !sudo tee "%" 	   " Save as sudo
+set scrolloff=3
+set list
+set listchars=eol:¬,tab:▸–
+set fillchars+=vert:\│
+set complete+=kspell
+set completeopt=menuone,longest
+set shortmess+=c
+
+hi cursorline   cterm=none  ctermbg=black  guibg=blue
+set cursorline
+
+" System Clip Board
+set clipboard=unnamed
+
+
+" ------------------------------------------------------------------------------
+" Python Edeting
+au BufNewFile,BufRead *.py,*.pyw
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+    \ setlocal commentstring=#\ %s
+    \ :%s/\s\+$//e         " Clear empty spaces at the end of lines 
+    \ let python_highlight_all=1
+
+
+" Tabs and spaces handling
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+
+" Searching
+set ignorecase                " Ignore case when searching
+set smartcase                 " When searching try to be smart about cases
+set hlsearch                  " Highlight search results
+set incsearch                 " Makes search act like search in modern browsers
+set lazyredraw                " Don't redraw while executing macros
+set path+=**                  " Recursive file searching
+
+
+" Code folding
+set foldmethod=indent
+set foldlevel=99
+
+
+" restore place in file from previous session
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+autocmd BufNewFile,BufReadPost *.md set nonu nornu
+
+" ------------------------------------------------------------------------------
+" PLUGINS SETTINGS AND MAPPINGS
+
+
+" TMUX Vim Navigator
+let g:tmux_navigator_no_mappings = 1
+
+noremap <silent> <C-h> :<C-U>TmuxNavigateLeft<cr>
+noremap <silent> <C-j> :<C-U>TmuxNavigateDown<cr>
+noremap <silent> <C-k> :<C-U>TmuxNavigateUp<cr>
+noremap <silent> <C-;> :<C-U>TmuxNavigatePrevious<cr>
+noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
+
+
+" ------------------------------------------------------------------------------
+" GENERAL KEYBINDINGS
+let mapleader = "\<Space>"
+
+
+" Windows
+noremap <leader>v :vsplit<cr>
+noremap <leader>s :split<cr>
+
+" Tab Navigation mappings
+set showtabline=0
+map  tt :tabnew
+map  <M-Right> :tabn<CR>
+map  <M-Left> :tabp<CR>
+imap <M-Right> <ESC>:tabn<CR>
+imap <M-Left> <ESC>:tabp<CR>
+
+" Searching
+nnoremap <silent> // :noh<CR>
+
+" move through split windows
+nmap <leader>k :wincmd k<CR>
+nmap <leader>j :wincmd j<CR>
+nmap <leader>h :wincmd h<CR>
+nmap <leader>l :wincmd l<CR>
+
+" move through buffers Back, Next, Close, Toggle, list
+nmap <leader>[ :bp!<CR>
+nmap <leader>] :bn!<CR>
+nmap <leader>x :bd<CR>"
+nmap <leader>p :e#<CR>
+nmap <leader>B :Buffers<CR>
+
+" Date and time
+imap <F2> <C-R>=strftime("%A, %d %b %Y")<CR>
+imap <F3> <C-R>=strftime("%I:%m")<CR>
+imap <F4> <C-R>=strftime("%Y-%m-%d %a %I:%m %p")<CR>
+
+" Terminal
+" Enter normal mode in terminal   ctrl+w N
+" Exit normal mode                I
+noremap <Leader>ttv :botright vertical terminal ++cols=80<CR>
+noremap <Leader>tt :below terminal ++rows=10<CR>
+
+" Open vim file tree
+nnoremap <leader>f :wincmd v<bar> :Ex <bar> :vertical resize30<CR
+
+" Moving selected text
+"nnoremap <c-k> :m .-2<CR>==
+"nnoremap <c-j> :m .+1<CR>==
+"vnoremap <c-j> :m '>+1<CR>gv=gv
+"vnoremap <c-k> :m '<-2<CR>gv=gv
+
+
+" virtualenv
+let g:python3_host_prog='/usr/bin/python3'
+

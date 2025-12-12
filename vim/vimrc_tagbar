@@ -1,0 +1,2 @@
+" --- TAGBAR
+map <leader>t :TagbarToggle<CR>

@@ -1,0 +1,120 @@
+! URXVT ========================================================================
+! APPEARANCE
+!URxvt.termName: 			rxvt-unicode
+!URxvt.scrollBar: 			false
+!URxvt.background: 			black
+!URxvt.foreground: 			gray
+
+*background: 				#212121
+*foreground: 				#95969A
+
+*colorBD: 					#2e9ef4
+*colorIT: 					#2e9ef4
+*colorUL: 					#2e9ef4
+
+*cursorColor: 				#2e9ef4
+
+! BLK
+*color0: 					#31312E
+*color8: 					#6F7074
+
+! WHT
+*color7: 					#2e9ef4
+*color15: 					#31312E
+
+! RED
+*color1: 					#A15C56
+*color9: 					#DD928B
+
+! YEL
+*color3: 					#7D6F37
+*color11: 					#B6A56A
+
+! GRN
+*color2: 					#407C52
+*color10: 					#76B486
+
+! CYN
+*color6: 					#007E8A
+*color14: 					#4BB6C3
+
+! BLU
+*color4: 					#5172A7
+*color12: 					#89A8E2
+
+! MAG
+*color5: 					#945E8D
+*color13: 					#CD94C6
+
+*color16: 					#010000
+*color17: 					#252421
+*color18: 					#1F1E1B
+*color19: 					#31312E
+*color20: 					#6F7074
+*color21: 					#95969A
+*color22: 					#2e9ef4
+*color23: 					#31312E
+
+! ------------------------------------------------------------------------------
+! Font prefferenes
+!URxvt.font: 				xft:DejaVu Sans Mono:pixelsize=14
+!URxvt.boldFont: 			xft:DejaVu Sans Mono:pixelsize=13:weight=bold
+!QURxvt.font:  				xft:Inconsolata:size=10:antialias=true
+!URxvt.font:  				xft:Inconsolata\ LGC\ Nerd\ Font:size=12:antialias=true
+URxvt.font: xft:FiraCode Nerd Font:pixelsize=14
+URxvt.letterSpace: -1
+URxvt.imLocale:    en_US.UTF-8
+URxvt.iso14755:    False
+
+! ------------------------------------------------------------------------------
+! Larger history limit
+URxvt*buffered: 			true
+URxvt*cursorBlink: 			true
+URxvt*underlineColor: 		#5172A7
+URxvt*depth: 				32
+URxvt*boderless: 			1
+URxvt*scrollBar: 			false
+URxvt*loginShell: 			true
+Urxvt*secondaryScroll:  	true    # Enable Shift-PageUp/Down in screen
+URxvt*saveLines: 			5000
+URxvt*termName: 			rxvt-unicode
+
+! ------------------------------------------------------------------------------
+! Copy/Paste
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+
+! ------------------------------------------------------------------------------
+! PERL EXTENSIONS
+URxvt*perl-lib:             ~/.config/uxrvt/perl/
+!URxvt.perl-ext-common: 		default,matcher,font-size,clipboard,keyboard-select
+URxvt.perl-ext-common: default,clipboard,matcher,keyboard-select,url-select
+
+! ------------------------------------------------------------------------------
+! MATCHER: Open urls in browser with Control-Click
+URxvt.urlLauncher: 			/usr/bin/firefox
+URxvt.matcher.button: 		C1
+
+! ------------------------------------------------------------------------------
+! URL-SELECT: Selects URL to open or copy 
+URxvt.keysym.M-u:           perl:url-select:select_next
+URxvt.url-select.launcher:  /usr/bin/firefox
+URxvt.url-select.underline: true
+
+! ------------------------------------------------------------------------------
+! KEYBOARD SELECT: Vim-like movment in terminal 
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+
+! ------------------------------------------------------------------------------
+! Transparency
+URxvt*transparent: true
+URxvt*shading: 20
+
+! ------------------------------------------------------------------------------
+! Change font size on Control-Plus/Minus
+!URxvt.keysym.Control-0x2b: perl:font-size:increase
+!URxvt.keysym.Control-0x2d: perl:font-size:decrease
+
+! ------------------------------------------------------------------------------
+! General configuration
+
+URxvt.urgentBell: 			False   # Disable bell

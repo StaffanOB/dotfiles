@@ -1,0 +1,28 @@
+# Secrets
+env_secrets
+**/env_secrets
+
+# Backups
+*.backup
+*.bak
+.dotfiles_backup_*
+
+# System files
+.DS_Store
+thumbs.db
+
+# Vim runtime files
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Vim undo/backup directories (in case they leak here)
+undos/
+backups/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

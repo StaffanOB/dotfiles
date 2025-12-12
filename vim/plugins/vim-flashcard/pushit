@@ -1,0 +1,23 @@
+#!/usr/bin/ksh
+Tmp="/tmp/$$"
+TmpDir="/tmp/dir$$"
+trap 'rm -f "$Tmp" >/dev/null 2>&1' 0
+trap "exit 2" 1 2 3 13 15
+rm $Tmp  >/dev/null 2>&1
+
+
+
+#-------------------------------------------------------------------------------------
+git add Flashcard.png
+git add plugin/Flashcard.vim
+git add plugin/1.fc
+git add pushit
+git add mktest
+git add README.md
+git commit -m "Update"
+git push -u origin main
+REPO=vim-flashcard
+rm -rf $HOME/.vim/bundle/$REPO
+vim  -c ":PluginInstall! $REPO" -c ":qa!"
+#-------------------------------------------------------------------------------------
+

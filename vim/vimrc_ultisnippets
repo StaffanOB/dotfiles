@@ -1,0 +1,6 @@
+map <leader>u :UltiSnipsEdit<cr>
+let g:UltiSnipsExpandTrigger="<s-tab>"
+" let g:UltiSnipsListSnippets="<s-n>"
+let g:UltiSnipsJumpForwardTrigger="<s-l>"
+let g:UltiSnipsJumpBackwardTrigger="<s-k>"
+let g:UltiSnipsEditSplit="vertical"

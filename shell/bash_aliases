@@ -1,0 +1,28 @@
+alias l='ls -lh'
+alias ll='ls -AlF'
+alias mutt='neomutt'
+alias ga="git add ."
+alias gp="git pull"
+alias gs="git status"
+alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all"
+alias vm="source ./.venv/bin/activate"
+alias cvm="python3 -m venv .venv"
+alias ivm="pip install -r requirements.txt"
+
+# Editor
+#alias vim='vi'
+
+
+# VPNs
+alias vpn-htb='sudo openvpn --config $HOME/vpns/hack-the-box-start.ovpn'
+
+# Tmux - create session named after current directory
+tm() {
+    local name=$(basename "$PWD")
+    tmux new -s "$name"
+}
+
+# Apps
+alias inkscape="flatpak run org.inkscape.Inkscape"
+
+

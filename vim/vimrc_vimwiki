@@ -1,0 +1,7 @@
+" VIMWIKI CONFIG
+let g:vimwiki_list = [{'path': '$HOME/Documents/Notes/', 'ext': '.md', 'syntax': 'markdown'}]
+au FileType vimwiki setlocal shiftwidth=4 tabstop=4 noexpandtab
+
+" KEYBINDINGS
+let g:vimwiki_key_mappings = { 'table_mappings': 0 }   " Disable table mappings
+let g:vimwiki_table_mappings = 0                       " Disable table mappings

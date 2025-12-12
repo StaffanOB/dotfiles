@@ -1,0 +1,14 @@
+# fd ignore patterns
+# This file will be symlinked to ~/.fdignore
+
+.git/
+node_modules/
+.idea/
+.vscode/
+.sass-cache/
+build/
+dist/
+tmp/
+*.swp
+*.swo
+*~

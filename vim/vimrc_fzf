@@ -1,0 +1,3 @@
+" --- FZF Open fuzzy Searching
+nnoremap <silent> <C-f> :Files<CR>
+let $FZF_DEFAULT_COMMAND='find . \( -name node_modules -o -name .git \) -prune -o -print'

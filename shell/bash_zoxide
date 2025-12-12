@@ -1,0 +1,7 @@
+# Zoxide configuration
+# This file will be symlinked to ~/.bash_zoxide
+
+# Initialize zoxide
+if type zoxide &> /dev/null; then
+    eval "$(zoxide init bash)"
+fi

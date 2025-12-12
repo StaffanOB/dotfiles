@@ -1,0 +1,2 @@
+nnoremap <F3> :call g:FlashCard($HOME . "/Documents/Notes/flash_cards.fc")<cr>
+

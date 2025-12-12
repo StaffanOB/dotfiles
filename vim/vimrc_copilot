@@ -1,0 +1,44 @@
+    let g:copilot_filetypes = {
+        \ 'gitcommit': v:true,
+        \ 'markdown': v:false,
+        \ 'yaml': v:true,
+        \ 'python': v:true,
+        \ 'typescript': v:true,
+        \ 'javascript': v:true,
+        \ 'json': v:true
+        \ }
+
+" :CopilotAsk [optional question]
+" With range (visual or :'<,'>): sends only that part of the buffer.
+command! -nargs=? -range=% CopilotAsk call CopilotAsk(<line1>, <line2>, <q-args>)
+
+function! CopilotAsk(line1, line2, prompt) range
+  let l:file = expand('%:p')
+  let l:ft   = &filetype
+
+  " Ask user if no prompt was passed
+  if a:prompt ==# ''
+    let l:question = input('Question for Copilot: ')
+  else
+    let l:question = a:prompt
+  endif
+
+  " Build command with context env vars
+  let l:cmd = 'COPILOT_FILEPATH=' . shellescape(l:file)
+        \ . ' COPILOT_FILETYPE=' . shellescape(l:ft)
+        \ . ' ~/.local/bin/copilot_ask.sh ' . shellescape(l:question)
+
+  " Get text for the selected range (or whole buffer)
+  let l:lines = getline(a:line1, a:line2)
+  let l:input = join(l:lines, "\n")
+
+  " Run Copilot CLI and capture output
+  let l:output = systemlist(l:cmd, l:input)
+
+  " Show answer in a new split
+  belowright new
+  setlocal buftype=nofile bufhidden=wipe noswapfile
+  call setline(1, l:output)
+  normal! gg
+endfunction
+
