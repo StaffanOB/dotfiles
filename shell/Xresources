@@ -5,8 +5,8 @@
 !URxvt.background: 			black
 !URxvt.foreground: 			gray
 
-*background: 				#212121
-*foreground: 				#95969A
+*background: 				#031d30
+*foreground: 				#cccccc
 
 *colorBD: 					#2e9ef4
 *colorIT: 					#2e9ef4
@@ -15,12 +15,12 @@
 *cursorColor: 				#2e9ef4
 
 ! BLK
-*color0: 					#31312E
-*color8: 					#6F7074
+*color0: 					#031d30
+*color8: 					#363636
 
 ! WHT
-*color7: 					#2e9ef4
-*color15: 					#31312E
+*color7: 					#cccccc
+*color15: 					#f8f8f2
 
 ! RED
 *color1: 					#A15C56
@@ -31,20 +31,20 @@
 *color11: 					#B6A56A
 
 ! GRN
-*color2: 					#407C52
-*color10: 					#76B486
+*color2: 					#363636
+*color10: 					#6F7074
 
 ! CYN
 *color6: 					#007E8A
 *color14: 					#4BB6C3
 
 ! BLU
-*color4: 					#5172A7
-*color12: 					#89A8E2
+*color4: 					#2e9ef4
+*color12: 					#2e9ef4
 
 ! MAG
-*color5: 					#945E8D
-*color13: 					#CD94C6
+*color5: 					#ff79c6
+*color13: 					#ff79c6
 
 *color16: 					#010000
 *color17: 					#252421
@@ -55,6 +55,37 @@
 *color22: 					#2e9ef4
 *color23: 					#31312E
 
+! Org. BLK - Black
+! Org. *color0:  #000000
+! Org. *color8:  #808080
+! Org. 
+! Org. RED - Red
+! Org. *color1:  #800000
+! Org. *color9:  #FF0000
+! Org. 
+! Org. GRN - Green
+! Org. *color2:  #008000
+! Org. *color10: #00FF00
+! Org. 
+! Org. YEL - Yellow
+! Org. *color3:  #808000
+! Org. *color11: #FFFF00
+! Org. 
+! Org. BLU - Blue
+! Org. *color4:  #000080
+! Org. *color12: #0000FF
+! Org. 
+! Org. MAG - Magenta
+! Org. *color5:  #800080
+! Org. *color13: #FF00FF
+! Org. 
+! Org. CYN - Cyan
+! Org. *color6:  #008080
+! Org. *color14: #00FFFF
+! Org. 
+! Org. WHT - White
+! Org. *color7:  #C0C0C0
+! Org. *color15: #FFFFFF
 ! ------------------------------------------------------------------------------
 ! Font prefferenes
 !URxvt.font: 				xft:DejaVu Sans Mono:pixelsize=14

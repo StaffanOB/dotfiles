@@ -1,6 +1,7 @@
 set encoding=utf-8
 set nocompatible                               " No vi-compatible
 autocmd! bufwritepost .vimrc source %          " Automatic reload VIMRC
+set autoread                                   " Auto read files when changed outside vim
 
 " ------------------------------------------------------------------------------
 " PLUGIN CONFIGURATIONS
