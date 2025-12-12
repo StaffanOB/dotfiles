@@ -23,7 +23,6 @@ backups/
 
 # Vim plugins (installed via vim-plug)
 vim/plugins/
-vim/autoload/
 
 # Tmux plugins (installed via tpm)
 tmux/tmux/plugins/
