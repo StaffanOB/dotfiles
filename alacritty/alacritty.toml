@@ -1,0 +1,46 @@
+[env]
+LANG = "en_US.UTF-8"
+
+[window]
+dynamic_padding = false
+padding = { x = 0, y = 0 }
+
+[font]
+normal = { family = "FiraCode Nerd Font", style = "Regular" }
+size = 12.0
+offset = { x = -1, y = 0 }
+
+[scrolling]
+history = 5000
+multiplier = 3
+
+[bell]
+duration = 0
+
+# Toor-Zen color scheme (matching urxvt, tmux, and vim)
+[colors.primary]
+background = "#181818"
+foreground = "#cccccc"
+
+[colors.cursor]
+cursor = "#2e9ef4"
+
+[colors.normal]
+black   = "#181818"
+red     = "#A15C56"
+green   = "#98c379"
+yellow  = "#7D6F37"
+blue    = "#2e9ef4"
+magenta = "#ff79c6"
+cyan    = "#007E8A"
+white   = "#cccccc"
+
+[colors.bright]
+black   = "#363636"
+red     = "#DD928B"
+green   = "#98c379"
+yellow  = "#B6A56A"
+blue    = "#2e9ef4"
+magenta = "#ff79c6"
+cyan    = "#4BB6C3"
+white   = "#f8f8f2"

@@ -253,6 +253,12 @@ create_symlink "$SCRIPT_DIR/shell/fzf/config.bash" "$HOME/.config/fzf/config.bas
 create_symlink "$SCRIPT_DIR/shell/fzf/key-bindings.bash" "$HOME/.config/fzf/key-bindings.bash"
 echo
 
+# Alacritty
+echo -e "${BLUE}Alacritty:${NC}"
+mkdir -p "$HOME/.config/alacritty"
+create_symlink "$SCRIPT_DIR/alacritty/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
+echo
+
 if [[ "$DRY_RUN" == false ]]; then
     echo -e "${GREEN}=== Setup Complete! ===${NC}"
     if [[ -d "$BACKUP_DIR" ]]; then

@@ -5,7 +5,7 @@
 !URxvt.background: 			black
 !URxvt.foreground: 			gray
 
-*background: 				#031d30
+*background: 				#181818
 *foreground: 				#cccccc
 
 *colorBD: 					#2e9ef4
@@ -15,7 +15,7 @@
 *cursorColor: 				#2e9ef4
 
 ! BLK
-*color0: 					#031d30
+*color0: 					#181818
 *color8: 					#363636
 
 ! WHT
@@ -31,8 +31,8 @@
 *color11: 					#B6A56A
 
 ! GRN
-*color2: 					#363636
-*color10: 					#6F7074
+*color2: 					#98c379
+*color10: 					#98c379
 
 ! CYN
 *color6: 					#007E8A

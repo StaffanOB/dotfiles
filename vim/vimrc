@@ -85,7 +85,7 @@ Plug 'joshdick/onedark.vim'
 
 call plug#end()
 
-colorscheme onedark
+colorscheme toorzen  "onedark
 
 set noshowmode
 

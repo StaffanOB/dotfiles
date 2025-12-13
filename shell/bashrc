@@ -67,12 +67,12 @@ show_virtual_env() {
     fi
 }
 
-# Function to show git branch in gray
+# Function to show git branch in light gray
 show_git_branch() {
     if git rev-parse --git-dir > /dev/null 2>&1; then
         branch=$(git branch --show-current 2>/dev/null)
         if [ -n "$branch" ]; then
-            printf "\001\e[90m\002(%s)\001\e[0m\002" "$branch"
+            printf "\001\e[37m\002(%s)\001\e[0m\002" "$branch"
         fi
     fi
 }
