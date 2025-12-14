@@ -27,12 +27,12 @@ cursor = "#2e9ef4"
 
 [colors.normal]
 black   = "#181818"
-red     = "#A15C56"
-green   = "#98c379"
-yellow  = "#7D6F37"
-blue    = "#2e9ef4"
-magenta = "#ff79c6"
-cyan    = "#007E8A"
+red     = "#c3686e"
+green   = "#8fbd6a"
+yellow  = "#96956d"
+blue    = "#159ae4"
+magenta = "#e55eb8"
+cyan    = "#299896"
 white   = "#cccccc"
 
 [colors.bright]

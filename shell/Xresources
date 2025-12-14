@@ -23,27 +23,27 @@
 *color15: 					#f8f8f2
 
 ! RED
-*color1: 					#A15C56
+*color1: 					#c3686e
 *color9: 					#DD928B
 
 ! YEL
-*color3: 					#7D6F37
+*color3: 					#96956d
 *color11: 					#B6A56A
 
 ! GRN
-*color2: 					#98c379
+*color2: 					#8fbd6a
 *color10: 					#98c379
 
 ! CYN
-*color6: 					#007E8A
+*color6: 					#299896
 *color14: 					#4BB6C3
 
 ! BLU
-*color4: 					#2e9ef4
+*color4: 					#159ae4
 *color12: 					#2e9ef4
 
 ! MAG
-*color5: 					#ff79c6
+*color5: 					#e55eb8
 *color13: 					#ff79c6
 
 *color16: 					#010000
