@@ -292,9 +292,10 @@ These work seamlessly across Tmux panes and Vim splits:
 | **`Prefix Ctrl+r`** | **Restore session** |
 
 ### Custom Scripts (Custom)
-| Keybinding     | Action                          |
-|----------------|---------------------------------|
-| **`Prefix i`** | **Launch cht.sh (cheat sheet)** |
+| Keybinding     | Action                                         |
+|----------------|------------------------------------------------|
+| **`Prefix i`** | **Launch cht.sh (cheat sheet)**                |
+| **`Prefix g`** | **Open GitHub Copilot (right pane, 1/3 width)** |
 
 ---
 
