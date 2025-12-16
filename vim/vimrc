@@ -80,7 +80,7 @@ Plug 'github/copilot.vim'
 
 
 " Themes and colors
-"Plug 'lilydjwg/colorizer'               " Colorizes the background of color codes
+Plug 'lilydjwg/colorizer'               " Colorizes the background of color codes
 Plug 'joshdick/onedark.vim'
 
 call plug#end()
@@ -228,7 +228,7 @@ noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
 " ------------------------------------------------------------------------------
 " GENERAL KEYBINDINGS
 let mapleader = "\<Space>"
-
+nmap <leader>r :edit!<CR>
 
 " Windows
 noremap <leader>v :vsplit<cr>

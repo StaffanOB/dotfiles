@@ -1,307 +1,398 @@
 # Dotfiles Keybinding Cheat Sheet
 
-> Complete reference for all custom keybindings across Vim, Tmux, and Bash configurations.
-
----
-
-## 🎯 Vim Keybindings
+## Vim Keybindings
 
 ### Leader Key
 - **Leader**: `Space`
 
-### General Navigation & Windows
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<Space>v` | Normal | Vertical split |
-| `<Space>s` | Normal | Horizontal split |
-| `<Space>k` | Normal | Move to window above |
-| `<Space>j` | Normal | Move to window below |
-| `<Space>h` | Normal | Move to window left |
-| `<Space>l` | Normal | Move to window right |
-| `<Space>f` | Normal | Open file tree (30 cols) |
-| `//` | Normal | Clear search highlighting |
+### Standard Vim Keybindings (Not Overridden)
 
-### Buffer Management
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<Space>[` | Normal | Previous buffer |
-| `<Space>]` | Normal | Next buffer |
-| `<Space>x` | Normal | Close buffer |
-| `<Space>p` | Normal | Toggle to last buffer |
-| `<Space>B` | Normal | FZF buffer list |
+#### Basic Movement
+| Keybinding | Mode   | Action                                      |
+|------------|--------|---------------------------------------------|
+| `h`        | Normal | Move left                                   |
+| `j`        | Normal | Move down                                   |
+| `k`        | Normal | Move up                                     |
+| `l`        | Normal | Move right                                  |
+| `w`        | Normal | Move to start of next word                  |
+| `b`        | Normal | Move to start of previous word              |
+| `e`        | Normal | Move to end of word                         |
+| `0`        | Normal | Move to start of line                       |
+| `^`        | Normal | Move to first non-blank character           |
+| `$`        | Normal | Move to end of line                         |
+| `gg`       | Normal | Go to first line                            |
+| `G`        | Normal | Go to last line                             |
+| `Ctrl+d`   | Normal | Scroll down half page                       |
+| `Ctrl+u`   | Normal | Scroll up half page                         |
+| `Ctrl+f`   | Normal | Scroll forward one page (overridden by FZF) |
+| `Ctrl+b`   | Normal | Scroll backward one page                    |
 
-### Tab Management
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `tt` | Normal | New tab |
-| `<M-Right>` | Normal/Insert | Next tab |
-| `<M-Left>` | Normal/Insert | Previous tab |
+#### Editing
+| Keybinding | Mode   | Action                          |
+|------------|--------|---------------------------------|
+| `i`        | Normal | Enter insert mode before cursor |
+| `a`        | Normal | Enter insert mode after cursor  |
+| `I`        | Normal | Insert at beginning of line     |
+| `A`        | Normal | Append at end of line           |
+| `o`        | Normal | Open new line below             |
+| `O`        | Normal | Open new line above             |
+| `x`        | Normal | Delete character under cursor   |
+| `dd`       | Normal | Delete line                     |
+| `yy`       | Normal | Yank (copy) line                |
+| `p`        | Normal | Paste after cursor              |
+| `P`        | Normal | Paste before cursor             |
+| `u`        | Normal | Undo                            |
+| `Ctrl+r`   | Normal | Redo                            |
+| `.`        | Normal | Repeat last command             |
 
-### Tmux Integration (vim-tmux-navigator)
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<C-h>` | Normal | Navigate left (Vim ↔ Tmux) |
-| `<C-j>` | Normal | Navigate down (Vim ↔ Tmux) |
-| `<C-k>` | Normal | Navigate up (Vim ↔ Tmux) |
-| `<C-l>` | Normal | Navigate right (Vim ↔ Tmux) |
-| `<C-;>` | Normal | Navigate to previous pane |
+#### Visual Mode
+| Keybinding | Mode   | Action                        |
+|------------|--------|-------------------------------|
+| `v`        | Normal | Enter visual mode (character) |
+| `V`        | Normal | Enter visual line mode        |
+| `Ctrl+v`   | Normal | Enter visual block mode       |
+| `>`        | Visual | Indent selection              |
+| `<`        | Visual | Unindent selection            |
+| `y`        | Visual | Yank selection                |
+| `d`        | Visual | Delete selection              |
 
-### FZF Fuzzy Finder
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<C-f>` | Normal | Fuzzy file search |
+#### Search & Replace
+| Keybinding      | Mode    | Action                            |
+|-----------------|---------|-----------------------------------|
+| `/pattern`      | Normal  | Search forward                    |
+| `?pattern`      | Normal  | Search backward                   |
+| `n`             | Normal  | Next search result                |
+| `N`             | Normal  | Previous search result            |
+| `*`             | Normal  | Search word under cursor forward  |
+| `#`             | Normal  | Search word under cursor backward |
+| `:s/old/new/g`  | Command | Replace in line                   |
+| `:%s/old/new/g` | Command | Replace in file                   |
 
-### CoC (Conquer of Completion)
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<C-Space>` | Insert | Trigger completion |
-| `<C-@>` | Insert | Trigger completion (alternative) |
-| `<CR>` | Insert | Confirm completion |
-| `<C-s>` | Normal/Visual | Range selection |
-| `K` | Normal | Show documentation |
-| `[g` | Normal | Previous diagnostic |
-| `]g` | Normal | Next diagnostic |
-| `gd` | Normal | Go to definition |
-| `gy` | Normal | Go to type definition |
-| `gi` | Normal | Go to implementation |
-| `gr` | Normal | Go to references |
-| `<Space>rn` | Normal | Rename symbol |
-| `<Space>f` | Normal/Visual | Format selected code |
-| `<Space>a` | Normal/Visual | Code action on selection |
-| `<Space>ac` | Normal | Code action on buffer |
-| `<Space>qf` | Normal | Quick fix current line |
-| `<Space>cl` | Normal | Code lens action |
+#### File Operations
+| Keybinding    | Mode    | Action              |
+|---------------|---------|---------------------|
+| `:w`          | Command | Save file           |
+| `:q`          | Command | Quit                |
+| `:wq`         | Command | Save and quit       |
+| `:q!`         | Command | Quit without saving |
+| `:e filename` | Command | Edit file           |
+| `<Space>v`    | Normal  | Reload current file |
 
-### CoC Text Objects
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `if` | Visual/Operator | Inner function |
-| `af` | Visual/Operator | Around function |
-| `ic` | Visual/Operator | Inner class |
-| `ac` | Visual/Operator | Around class |
+### General Navigation & Windows (Custom)
+| Keybinding     | Mode   | Action                        |
+|----------------|--------|-------------------------------|
+| **`<Space>v`** | Normal | **Vertical split**            |
+| **`<Space>s`** | Normal | **Horizontal split**          |
+| **`<Space>k`** | Normal | **Move to window above**      |
+| **`<Space>j`** | Normal | **Move to window below**      |
+| **`<Space>h`** | Normal | **Move to window left**       |
+| **`<Space>l`** | Normal | **Move to window right**      |
+| **`<Space>f`** | Normal | **Open file tree (30 cols)**  |
+| **`//`**       | Normal | **Clear search highlighting** |
 
-### Tagbar
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<Space>t` | Normal | Toggle tagbar |
+### Buffer Management (Custom)
+| Keybinding     | Mode   | Action                    |
+|----------------|--------|---------------------------|
+| **`<Space>[`** | Normal | **Previous buffer**       |
+| **`<Space>]`** | Normal | **Next buffer**           |
+| **`<Space>x`** | Normal | **Close buffer**          |
+| **`<Space>p`** | Normal | **Toggle to last buffer** |
+| **`<Space>B`** | Normal | **FZF buffer list**       |
 
-### UltiSnips
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<Space>u` | Normal | Edit snippets |
-| `<S-Tab>` | Insert | Expand snippet |
-| `<S-l>` | Insert | Jump forward in snippet |
-| `<S-k>` | Insert | Jump backward in snippet |
+### Tab Management (Custom)
+| Keybinding      | Mode          | Action           |
+|-----------------|---------------|------------------|
+| **`tt`**        | Normal        | **New tab**      |
+| **`<M-Right>`** | Normal/Insert | **Next tab**     |
+| **`<M-Left>`**  | Normal/Insert | **Previous tab** |
 
-### Terminal
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<Space>ttv` | Normal | Vertical terminal (80 cols) |
-| `<Space>tt` | Normal | Horizontal terminal (10 rows) |
-| `<C-w> N` | Terminal | Enter normal mode |
-| `I` | Terminal (normal) | Exit normal mode |
+### Tmux Integration (vim-tmux-navigator) (Custom)
+| Keybinding  | Mode   | Action                          |
+|-------------|--------|---------------------------------|
+| **`<C-h>`** | Normal | **Navigate left (Vim ↔ Tmux)**  |
+| **`<C-j>`** | Normal | **Navigate down (Vim ↔ Tmux)**  |
+| **`<C-k>`** | Normal | **Navigate up (Vim ↔ Tmux)**    |
+| **`<C-l>`** | Normal | **Navigate right (Vim ↔ Tmux)** |
+| **`<C-;>`** | Normal | **Navigate to previous pane**   |
 
-### Date/Time Insertion
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<F2>` | Insert | Insert date (e.g., "Monday, 12 Dec 2025") |
-| `<F3>` | Insert | Insert time (hour:minute) |
-| `<F4>` | Insert | Insert full timestamp |
+### FZF Fuzzy Finder (Custom)
+| Keybinding  | Mode   | Action                |
+|-------------|--------|-----------------------|
+| **`<C-f>`** | Normal | **Fuzzy file search** |
 
-### Flashcards
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<F3>` | Normal | Launch flashcard viewer |
+### CoC (Conquer of Completion) (Custom)
+| Keybinding      | Mode          | Action                               |
+|-----------------|---------------|--------------------------------------|
+| **`<C-Space>`** | Insert        | **Trigger completion**               |
+| **`<C-@>`**     | Insert        | **Trigger completion (alternative)** |
+| **`<CR>`**      | Insert        | **Confirm completion**               |
+| **`<C-s>`**     | Normal/Visual | **Range selection**                  |
+| **`K`**         | Normal        | **Show documentation**               |
+| **`[g`**        | Normal        | **Previous diagnostic**              |
+| **`]g`**        | Normal        | **Next diagnostic**                  |
+| **`gd`**        | Normal        | **Go to definition**                 |
+| **`gy`**        | Normal        | **Go to type definition**            |
+| **`gi`**        | Normal        | **Go to implementation**             |
+| **`gr`**        | Normal        | **Go to references**                 |
+| **`<Space>rn`** | Normal        | **Rename symbol**                    |
+| **`<Space>f`**  | Normal/Visual | **Format selected code**             |
+| **`<Space>a`**  | Normal/Visual | **Code action on selection**         |
+| **`<Space>ac`** | Normal        | **Code action on buffer**            |
+| **`<Space>qf`** | Normal        | **Quick fix current line**           |
+| **`<Space>cl`** | Normal        | **Code lens action**                 |
 
-### Vimspector (Debugging)
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `<Space>dd` | Normal | Launch debugger |
-| `<Space>dx` | Normal | Reset debugger |
-| `<Space>de` | Normal | Evaluate expression |
-| `<Space>dw` | Normal | Watch expression |
-| `<Space>do` | Normal | Show output |
+### CoC Text Objects (Custom)
+| Keybinding | Mode            | Action              |
+|------------|-----------------|---------------------|
+| **`if`**   | Visual/Operator | **Inner function**  |
+| **`af`**   | Visual/Operator | **Around function** |
+| **`ic`**   | Visual/Operator | **Inner class**     |
+| **`ac`**   | Visual/Operator | **Around class**    |
+
+### Tagbar (Custom)
+| Keybinding     | Mode   | Action            |
+|----------------|--------|-------------------|
+| **`<Space>t`** | Normal | **Toggle tagbar** |
+
+### UltiSnips (Custom)
+| Keybinding     | Mode   | Action                       |
+|----------------|--------|------------------------------|
+| **`<Space>u`** | Normal | **Edit snippets**            |
+| **`<S-Tab>`**  | Insert | **Expand snippet**           |
+| **`<S-l>`**    | Insert | **Jump forward in snippet**  |
+| **`<S-k>`**    | Insert | **Jump backward in snippet** |
+
+### Terminal (Custom)
+| Keybinding       | Mode              | Action                            |
+|------------------|-------------------|-----------------------------------|
+| **`<Space>ttv`** | Normal            | **Vertical terminal (80 cols)**   |
+| **`<Space>tt`**  | Normal            | **Horizontal terminal (10 rows)** |
+| **`<C-w> N`**    | Terminal          | **Enter normal mode**             |
+| **`I`**          | Terminal (normal) | **Exit normal mode**              |
+
+### Date/Time Insertion (Custom)
+| Keybinding | Mode   | Action                                        |
+|------------|--------|-----------------------------------------------|
+| **`<F2>`** | Insert | **Insert date (e.g., "Monday, 12 Dec 2025")** |
+| **`<F3>`** | Insert | **Insert time (hour:minute)**                 |
+| **`<F4>`** | Insert | **Insert full timestamp**                     |
+
+### Flashcards (Custom)
+| Keybinding | Mode   | Action                      |
+|------------|--------|-----------------------------|
+| **`<F3>`** | Normal | **Launch flashcard viewer** |
+
+### Vimspector (Debugging) (Custom)
+| Keybinding      | Mode   | Action                  |
+|-----------------|--------|-------------------------|
+| **`<Space>dd`** | Normal | **Launch debugger**     |
+| **`<Space>dx`** | Normal | **Reset debugger**      |
+| **`<Space>de`** | Normal | **Evaluate expression** |
+| **`<Space>dw`** | Normal | **Watch expression**    |
+| **`<Space>do`** | Normal | **Show output**         |
 
 ---
 
-## 🖥️ Tmux Keybindings
+## Tmux Keybindings
 
 ### Prefix Key
 - **Prefix**: `Ctrl+Space` (replaces default `Ctrl+b`)
 - **Send prefix to app**: `Ctrl+Space` twice
 
-### Session & Config
-| Keybinding | Action |
-|------------|--------|
-| `Prefix r` | Reload tmux config |
+### Standard Tmux Keybindings (Not Overridden)
 
-### Window Management
-| Keybinding | Action |
-|------------|--------|
-| `M-H` (Alt+Shift+H) | Previous window |
-| `M-L` (Alt+Shift+L) | Next window |
+#### Session Management
+| Keybinding | Action                               |
+|------------|--------------------------------------|
+| `Prefix $` | Rename current session               |
+| `Prefix d` | Detach from session                  |
+| `Prefix (` | Switch to previous session           |
+| `Prefix )` | Switch to next session               |
+| `Prefix s` | List sessions (overridden for split) |
 
-### Pane Management
-| Keybinding | Action |
-|------------|--------|
-| `Prefix v` | Split vertically (in current path) |
-| `Prefix s` | Split horizontally (in current path) |
+#### Window Management (Standard)
+| Keybinding   | Action                     |
+|--------------|----------------------------|
+| `Prefix c`   | Create new window          |
+| `Prefix ,`   | Rename current window      |
+| `Prefix &`   | Kill current window        |
+| `Prefix n`   | Next window                |
+| `Prefix p`   | Previous window            |
+| `Prefix 0-9` | Switch to window by number |
+| `Prefix w`   | List windows               |
+| `Prefix f`   | Find window by name        |
 
-### Tmux ↔ Vim Navigation (vim-tmux-navigator)
+#### Pane Management (Standard)
+| Keybinding     | Action                                                  |
+|----------------|---------------------------------------------------------|
+| `Prefix %`     | Split vertically (default - prefer custom `Prefix v`)   |
+| `Prefix "`     | Split horizontally (default - prefer custom `Prefix s`) |
+| `Prefix x`     | Kill current pane                                       |
+| `Prefix z`     | Toggle pane zoom                                        |
+| `Prefix {`     | Swap pane with previous                                 |
+| `Prefix }`     | Swap pane with next                                     |
+| `Prefix o`     | Cycle through panes                                     |
+| `Prefix q`     | Show pane numbers                                       |
+| `Prefix !`     | Convert pane to window                                  |
+| `Prefix Space` | Toggle pane layouts                                     |
+
+#### Pane Resizing
+| Keybinding               | Action            |
+|--------------------------|-------------------|
+| `Prefix :resize-pane -U` | Resize pane up    |
+| `Prefix :resize-pane -D` | Resize pane down  |
+| `Prefix :resize-pane -L` | Resize pane left  |
+| `Prefix :resize-pane -R` | Resize pane right |
+
+### Session & Config (Custom)
+| Keybinding     | Action                 |
+|----------------|------------------------|
+| **`Prefix r`** | **Reload tmux config** |
+
+### Window Management (Custom)
+| Keybinding              | Action              |
+|-------------------------|---------------------|
+| **`M-H` (Alt+Shift+H)** | **Previous window** |
+| **`M-L` (Alt+Shift+L)** | **Next window**     |
+
+### Pane Management (Custom)
+| Keybinding     | Action                                   |
+|----------------|------------------------------------------|
+| **`Prefix v`** | **Split vertically (in current path)**   |
+| **`Prefix s`** | **Split horizontally (in current path)** |
+
+### Tmux ↔ Vim Navigation (vim-tmux-navigator) (Custom)
 These work seamlessly across Tmux panes and Vim splits:
-| Keybinding | Action |
-|------------|--------|
-| `<C-h>` | Navigate left |
-| `<C-j>` | Navigate down |
-| `<C-k>` | Navigate up |
-| `<C-l>` | Navigate right |
+| Keybinding  | Action             |
+|-------------|--------------------|
+| **`<C-h>`** | **Navigate left**  |
+| **`<C-j>`** | **Navigate down**  |
+| **`<C-k>`** | **Navigate up**    |
+| **`<C-l>`** | **Navigate right** |
 
-### Mouse Mode
-| Keybinding | Action |
-|------------|--------|
-| `Prefix m` | Enable mouse mode |
-| `Prefix M` | Disable mouse mode |
+### Mouse Mode (Custom)
+| Keybinding     | Action                 |
+|----------------|------------------------|
+| **`Prefix m`** | **Enable mouse mode**  |
+| **`Prefix M`** | **Disable mouse mode** |
 
-### Copy Mode (Vi-style)
-| Keybinding | Mode | Action |
-|------------|------|--------|
-| `Prefix [` | Normal | Enter copy mode |
-| `v` | Copy | Begin selection |
-| `C-v` | Copy | Rectangle selection |
-| `y` | Copy | Yank and exit |
-| `Enter` | Copy | Copy to clipboard (xclip) |
+### Copy Mode (Vi-style) (Custom)
+| Keybinding     | Mode   | Action                        |
+|----------------|--------|-------------------------------|
+| **`Prefix [`** | Normal | **Enter copy mode**           |
+| **`v`**        | Copy   | **Begin selection**           |
+| **`C-v`**      | Copy   | **Rectangle selection**       |
+| **`y`**        | Copy   | **Yank and exit**             |
+| **`Enter`**    | Copy   | **Copy to clipboard (xclip)** |
 
-### Tmux Resurrect
-| Keybinding | Action |
-|------------|--------|
-| `Prefix Ctrl+s` | Save session |
-| `Prefix Ctrl+r` | Restore session |
+### Tmux Resurrect (Custom)
+| Keybinding          | Action              |
+|---------------------|---------------------|
+| **`Prefix Ctrl+s`** | **Save session**    |
+| **`Prefix Ctrl+r`** | **Restore session** |
 
-### Custom Scripts
-| Keybinding | Action |
-|------------|--------|
-| `Prefix i` | Launch cht.sh (cheat sheet) |
+### Custom Scripts (Custom)
+| Keybinding     | Action                          |
+|----------------|---------------------------------|
+| **`Prefix i`** | **Launch cht.sh (cheat sheet)** |
 
 ---
 
-## 🐚 Bash Keybindings
+## Bash Keybindings
 
 ### Vi Mode
 - **Mode**: Vi mode enabled (`set -o vi`)
 - Use standard Vi keybindings in command line (ESC for normal mode)
 
+### Standard Vi Mode Keybindings (Command Line)
+
+#### Insert Mode (Default)
+| Keybinding | Action                      |
+|------------|-----------------------------|
+| `Ctrl+a`   | Move to start of line       |
+| `Ctrl+e`   | Move to end of line         |
+| `Ctrl+w`   | Delete word backward        |
+| `Ctrl+u`   | Delete from cursor to start |
+| `Ctrl+k`   | Delete from cursor to end   |
+| `Ctrl+r`   | Reverse search history      |
+| `ESC`      | Enter vi normal mode        |
+
+#### Vi Normal Mode (After ESC)
+| Keybinding | Action                  |
+|------------|-------------------------|
+| `h`        | Move left               |
+| `l`        | Move right              |
+| `w`        | Move to next word       |
+| `b`        | Move to previous word   |
+| `0`        | Move to start of line   |
+| `$`        | Move to end of line     |
+| `i`        | Enter insert mode       |
+| `a`        | Append after cursor     |
+| `A`        | Append at end of line   |
+| `dd`       | Delete line             |
+| `dw`       | Delete word             |
+| `u`        | Undo                    |
+| `/`        | Search history forward  |
+| `?`        | Search history backward |
+| `n`        | Next search result      |
+| `N`        | Previous search result  |
+
+### Standard Bash Keybindings (Still Available)
+| Keybinding | Action                             |
+|------------|------------------------------------|
+| `Ctrl+c`   | Cancel current command             |
+| `Ctrl+z`   | Suspend current process            |
+| `Ctrl+d`   | Exit shell (EOF)                   |
+| `Tab`      | Auto-complete                      |
+| `!!`       | Repeat last command                |
+| `!$`       | Last argument of previous command  |
+| `!^`       | First argument of previous command |
+| `history`  | Show command history               |
+
 ### Custom Aliases - Git
-| Alias | Command |
-|-------|---------|
-| `ga` | `git add .` |
-| `gp` | `git pull` |
-| `gs` | `git status` |
-| `gl` | `git log --graph --abbrev-commit --decorate ...` (pretty log) |
+| Alias    | Command                                                           |
+|----------|-------------------------------------------------------------------|
+| **`ga`** | **`git add .`**                                                   |
+| **`gp`** | **`git pull`**                                                    |
+| **`gs`** | **`git status`**                                                  |
+| **`gl`** | **`git log --graph --abbrev-commit --decorate ...` (pretty log)** |
 
 ### Custom Aliases - Python/Virtualenv
-| Alias | Command |
-|-------|---------|
-| `vm` | `source ./.venv/bin/activate` |
-| `cvm` | `python3 -m venv .venv` |
-| `ivm` | `pip install -r requirements.txt` |
+| Alias     | Command                               |
+|-----------|---------------------------------------|
+| **`vm`**  | **`source ./.venv/bin/activate`**     |
+| **`cvm`** | **`python3 -m venv .venv`**           |
+| **`ivm`** | **`pip install -r requirements.txt`** |
 
 ### Custom Aliases - System
-| Alias | Command |
-|-------|---------|
-| `l` | `ls -lh` |
-| `ll` | `ls -AlF` |
-| `mutt` | `neomutt` |
-| `tmux` | `tmux -2` (256 colors) |
-| `inkscape` | `flatpak run org.inkscape.Inkscape` |
+| Alias          | Command                                 |
+|----------------|-----------------------------------------|
+| **`l`**        | **`ls -lh`**                            |
+| **`ll`**       | **`ls -AlF`**                           |
+| **`mutt`**     | **`neomutt`**                           |
+| **`tmux`**     | **`tmux -2` (256 colors)**              |
+| **`inkscape`** | **`flatpak run org.inkscape.Inkscape`** |
 
 ### Custom Aliases - VPN
-| Alias | Command |
-|-------|---------|
-| `vpn-htb` | `sudo openvpn --config $HOME/vpns/hack-the-box-start.ovpn` |
+| Alias         | Command                                                        |
+|---------------|----------------------------------------------------------------|
+| **`vpn-htb`** | **`sudo openvpn --config $HOME/vpns/hack-the-box-start.ovpn`** |
 
 ### Custom Functions
-| Function | Usage | Description |
-|----------|-------|-------------|
-| `tm()` | `tm` | Create tmux session named after current directory |
+| Function   | Usage    | Description                                           |
+|------------|----------|-------------------------------------------------------|
+| **`tm()`** | **`tm`** | **Create tmux session named after current directory** |
 
----
 
-## ⚠️ Potential Keybinding Conflicts
-
-### Conflict Analysis
-
-#### 🟢 **No Blocking Conflicts Detected**
-
-All keybindings have been analyzed and none directly block each other. Here's why:
-
-1. **Vim ↔ Tmux Integration**: 
-   - Navigation keys (`Ctrl+h/j/k/l`) are **intentionally shared** via `vim-tmux-navigator` plugin
-   - This is by design - they work seamlessly together, not in conflict
-
-2. **Context-Specific Bindings**:
-   - **Tmux prefix** (`Ctrl+Space`) only activates in Tmux, not in Vim
-   - **Vim leader** (`Space`) only works in Vim normal mode
-   - **Bash vi-mode** keybindings only affect the shell command line
-
-3. **Insert Mode Conflicts** (Resolved):
-   - `<F2>`, `<F3>`, `<F4>` in Vim insert mode for date/time insertion
-   - `<F3>` in Vim normal mode for flashcards
-   - These don't conflict because they use **different modes**
-
-4. **Copy Mode Separation**:
-   - Tmux copy mode uses vi-style keys (`v`, `y`)
-   - Vim uses standard vi keys
-   - No conflict because they operate in different contexts
-
-### 🔵 **Overlapping Bindings (By Design)**
+### **Overlapping Bindings (By Design)**
 
 These keybindings intentionally overlap for consistency:
 
-| Keybinding | Vim | Tmux | Intentional? |
-|------------|-----|------|--------------|
-| `Ctrl+h/j/k/l` | Navigate splits | Navigate panes | ✅ Yes (vim-tmux-navigator) |
-| `<Space>v` | Vertical split | - | N/A |
-| `<Space>s` | Horizontal split | - | N/A |
-| `Prefix v` | - | Vertical split | N/A |
-| `Prefix s` | - | Horizontal split | N/A |
+| Keybinding     | Vim              | Tmux             | Intentional?                |
+|----------------|------------------|------------------|-----------------------------|
+| `Ctrl+h/j/k/l` | Navigate splits  | Navigate panes   | ✅ Yes (vim-tmux-navigator) |
+| `<Space>v`     | Vertical split   | -                | N/A                         |
+| `<Space>s`     | Horizontal split | -                | N/A                         |
+| `Prefix v`     | -                | Vertical split   | N/A                         |
+| `Prefix s`     | -                | Horizontal split | N/A                         |
 
-**Note**: The split keybindings in Vim and Tmux are similar (`v`/`s`) but require different prefixes (Space vs Ctrl+Space), so they don't conflict.
-
-### 📝 Recommendations
-
-1. **Function Keys**: Consider if `F3` should be used for both flashcards (normal mode) and time insertion (insert mode). Currently safe but could be confusing.
-
-2. **Alt+Left/Right**: Used in Vim for tab navigation. Some terminal emulators may intercept these keys.
-
-3. **Ctrl+Space**: Used as Tmux prefix. Some terminal emulators or desktop environments may intercept this for input method switching.
-
----
-
-## 🔧 Troubleshooting
-
-### If Navigation Keys Don't Work
-
-1. **Vim ↔ Tmux not working**: Ensure `vim-tmux-navigator` plugin is installed in both Vim and Tmux
-2. **Terminal doesn't send Ctrl+key**: Check terminal settings for key pass-through
-3. **Alt keys not working**: Terminal may need configuration to send Alt as Meta key
-
-### If Prefix Keys Don't Work
-
-1. **Ctrl+Space**: Some systems use this for input switching - check system keybindings
-2. **Space in Vim**: Ensure you're in normal mode, not insert/visual mode
-
----
-
-## 📚 Quick Reference Card
-
-### Most Used Keybindings
-
-**Vim Navigation**: `Space + h/j/k/l` (windows), `Space + [/]` (buffers)  
-**Tmux Navigation**: `Alt+H/L` (windows), `Ctrl+h/j/k/l` (panes)  
-**File Finding**: `Ctrl+f` (Vim fuzzy find)  
-**Code Actions**: `Space + a` (code action), `gd` (go to definition)  
-**Splits**: `Space+v/s` (Vim), `Prefix+v/s` (Tmux)
-
----
-
-*Generated for dotfiles project - Last updated: 2025-12-12*
