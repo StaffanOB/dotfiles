@@ -8,6 +8,7 @@ alias gl="git log --graph --abbrev-commit --decorate --format=format:'%C(bold bl
 alias vm="source ./.venv/bin/activate"
 alias cvm="python3 -m venv .venv"
 alias ivm="pip install -r requirements.txt"
+alias c='clear'
 
 # Editor
 #alias vim='vi'

@@ -18,14 +18,14 @@
   "python.linting.pylintEnabled": true,
 
   // Snippets
-  "snippets.ultisnips.directories": ["UltiSnips", "~/.vim/UltiSnips/"],
+  "snippets.ultisnips.directories": ["UltiSnips"],
 
   // VimTeX
   "coc.source.vimtex.filetypes": ["tex", "plaintex"],
 
   // Prettier / ESLint
   "prettier.tslintIntegration": true,
-  "prettier.eslintIntegreation": false,
+  "prettier.eslintIntegration": false,
   "eslint.packageManager": "yarn",
   "eslint.nodePath": ".yarn/sdks",
   "workspace.workspaceFolderCheckCwd": false,

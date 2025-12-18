@@ -1,1 +1,0 @@
-/home/staffan/develop/projekts/tmux_project/tmpr.py

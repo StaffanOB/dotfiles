@@ -15,10 +15,7 @@ set shortmess+=c
 " other plugin before putting this into your config.
 
 
-function! s:CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+
 
 
 "inoremap <silent><expr> <TAB>
@@ -124,10 +121,10 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 
 " VIMSector
-let g:vimspector_enable_mappings = "HUMAN"
-nmap <leader>dd :call vimspector#Launch()<CR>
-nmap <leader>dx :VimspectorReset<CR>
-nmap <leader>de :VimspectorEval
-nmap <leader>dw :VimspectorWatch
-nmap <leader>do :VimspectorShowOurput
-autocmd FileType java nmap <leader>dd :CocCommand java.debug.vimspector.start<CR>
+" let g:vimspector_enable_mappings = "HUMAN"
+" nmap <leader>dd :call vimspector#Launch()<CR>
+" nmap <leader>dx :VimspectorReset<CR>
+" nmap <leader>de :VimspectorEval
+" nmap <leader>dw :VimspectorWatch
+" nmap <leader>do :VimspectorShowOutput
+" autocmd FileType java nmap <leader>dd :CocCommand java.debug.vimspector.start<CR>

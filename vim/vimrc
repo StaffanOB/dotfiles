@@ -1,4 +1,6 @@
 set encoding=utf-8
+let s:vim_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+
 set nocompatible                               " No vi-compatible
 autocmd! bufwritepost .vimrc source %          " Automatic reload VIMRC
 set autoread                                   " Auto read files when changed outside vim
@@ -7,14 +9,14 @@ set autoread                                   " Auto read files when changed ou
 " PLUGIN CONFIGURATIONS
 " Vim-plug initialization
 let vim_plug_just_installed = 0
-let vim_plug_path = expand('~/.vim/autoload/plug.vim')
+let vim_plug_path = s:vim_dir . '/autoload/plug.vim'
 
 if !filereadable(vim_plug_path)
     echo "Installing Vim-plug"
     echo ""
 
-    silent !mkdir -p ~/.vim/autoload
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    execute 'silent !mkdir -p ' . fnameescape(s:vim_dir . '/autoload')
+    execute 'silent !curl -fLo ' . fnameescape(s:vim_dir . '/autoload/plug.vim') . ' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
     let vim_plug_just_installed = 1
 endif
@@ -25,7 +27,7 @@ if vim_plug_just_installed
 endif
 
 " Activate plugins
-call plug#begin("~/.vim/plugins")
+call plug#begin(s:vim_dir . '/plugins')
 
 " -----------------------------------------------------------------------------
 " PLUGIN LIST
@@ -63,6 +65,7 @@ Plug 'nvie/vim-flake8'
 Plug 'sansyrox/vim-python-virtualenv'
 
 Plug 'mfukar/robotframework-vim'
+Plug 'CarloDePieri/vim-pytest'
 
 " Javascrip
 Plug 'pangloss/vim-javascript'
@@ -100,15 +103,15 @@ endif
 " ------------------------------------------------------------------------------
 " PLUGINS
 " ------------------------------------------------------------------------------
-source ~/.vim/vimrc_fzf
-source ~/.vim/vimrc_coc
-source ~/.vim/vimrc_ale
-source ~/.vim/vimrc_tagbar
-source ~/.vim/vimrc_airline
-source ~/.vim/vimrc_ultisnippets
-source ~/.vim/vimrc_vimwiki
-source ~/.vim/vimrc_copilot
-source ~/.vim/vimrc_flashcard
+execute 'source ' . s:vim_dir . '/vimrc_fzf'
+execute 'source ' . s:vim_dir . '/vimrc_coc'
+execute 'source ' . s:vim_dir . '/vimrc_ale'
+execute 'source ' . s:vim_dir . '/vimrc_tagbar'
+execute 'source ' . s:vim_dir . '/vimrc_airline'
+execute 'source ' . s:vim_dir . '/vimrc_ultisnippets'
+execute 'source ' . s:vim_dir . '/vimrc_vimwiki'
+execute 'source ' . s:vim_dir . '/vimrc_copilot'
+execute 'source ' . s:vim_dir . '/vimrc_flashcard'
 
 
 " ------------------------------------------------------------------------------
@@ -120,7 +123,7 @@ if !isdirectory(&directory)
 endif
 
 set backup                                              " Make backup files
-set backupdir=~/.vim/backups 	                          " Where to put backup files
+execute 'set backupdir=' . fnameescape(s:vim_dir . '/backups') 
 if !isdirectory(&backupdir)
     call mkdir(&backupdir, "p")
 endif
@@ -175,16 +178,16 @@ set clipboard=unnamed
 " ------------------------------------------------------------------------------
 " Python Edeting
 au BufNewFile,BufRead *.py,*.pyw
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
-    \ setlocal commentstring=#\ %s
-    \ :%s/\s\+$//e         " Clear empty spaces at the end of lines 
-    \ let python_highlight_all=1
+    \ setlocal tabstop=4 |
+    \ setlocal softtabstop=4 |
+    \ setlocal shiftwidth=4 |
+    \ setlocal textwidth=79 |
+    \ setlocal expandtab |
+    \ setlocal autoindent |
+    \ setlocal fileformat=unix |
+    \ setlocal commentstring=#\ %s |
+    \ let b:python_highlight_all=1 |
+    \ autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 
 " Tabs and spaces handling
