@@ -6,24 +6,6 @@ autocmd! bufwritepost .vimrc source %          " Automatic reload VIMRC
 set autoread                                   " Auto read files when changed outside vim
 
 " ------------------------------------------------------------------------------
-" OPTIMIZATION PHASES - Enable gradually by uncommenting
-" ------------------------------------------------------------------------------
-" Phase 1: Enable vim-lsp (replaces CoC) - BIGGEST PERFORMANCE WIN
-let g:enable_phase_1 = 1
-
-" Phase 2: Enable lightline (replaces vim-airline) - FASTER STATUSLINE
-let g:enable_phase_2 = 1
-
-" Phase 3: Enable optimized ALE - FASTER LINTING
-let g:enable_phase_3 = 1
-
-" Phase 4: Enable Databricks support - NEW FUNCTIONALITY
-let g:enable_phase_4 = 1
-
-" Phase 5: Enable lazy-loading - FASTER STARTUP
-let g:enable_phase_5 = 1
-
-" ------------------------------------------------------------------------------
 " PLUGIN CONFIGURATIONS
 " Vim-plug initialization
 let vim_plug_just_installed = 0
@@ -51,42 +33,27 @@ call plug#begin(s:vim_dir . '/plugins')
 " PLUGIN LIST
 
 " General
-if exists('g:enable_phase_5') && g:enable_phase_5
-    " Phase 5: Lazy-loaded plugins
-    Plug 'vimwiki/vimwiki', { 'on': 'VimwikiIndex' }
-    Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-    Plug 'junegunn/fzf', { 'on': ['FZF', 'Files', 'Buffers'], 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim', { 'on': ['FZF', 'Files', 'Buffers'] }
-else
-    " Normal loading
-    Plug 'vimwiki/vimwiki'
-    Plug 'majutsushi/tagbar'
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim'
-endif
-
+Plug 'vimwiki/vimwiki'                                  " Markdown wiki
 Plug 'ap/vim-buftabline'                                " Helps manage buffers
-
-" Phase 2: Statusline - Choose one
-if exists('g:enable_phase_2') && g:enable_phase_2
-    " NEW: lightline (faster)
-    Plug 'itchyny/lightline.vim'
-else
-    " OLD: vim-airline (slower)
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-endif
-
+Plug 'vim-airline/vim-airline'                          " VIM Status bar
+Plug 'vim-airline/vim-airline-themes'
 Plug 'mhinz/vim-startify'                               " VIM Start Page
 Plug 'christoomey/vim-tmux-navigator'                   " TMUX/VIM Nav integration
 Plug 'tpope/vim-commentary'                             " Commenting
 Plug 'archernar/vim-flashcard'                          " Flashcards
 
 " Editing
+Plug 'majutsushi/tagbar'                                " Class outline viewer
 Plug 'tpope/vim-sensible'                               " See changes to the file
 Plug 'tpope/vim-unimpaired'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+
+
+" Searching
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 
 " Languages
 Plug 'ap/vim-css-color'
@@ -94,60 +61,26 @@ Plug 'ap/vim-css-color'
 " Python
 Plug 'vim-scripts/indentpython.vim'
 Plug 'dense-analysis/ale'
-
-" Phase 5: Lazy-load Python testing
-if exists('g:enable_phase_5') && g:enable_phase_5
-    Plug 'CarloDePieri/vim-pytest', { 'for': 'python' }
-else
-    Plug 'CarloDePieri/vim-pytest'
-endif
-
-" Robot Framework
-if exists('g:enable_phase_5') && g:enable_phase_5
-    " Phase 5: Lazy-load Robot Framework
-    Plug 'mfukar/robotframework-vim', { 'for': 'robot' }
-else
-    Plug 'mfukar/robotframework-vim'
-endif
-
-" Python extras (keep for compatibility)
 Plug 'nvie/vim-flake8'
 Plug 'sansyrox/vim-python-virtualenv'
 
-" JavaScript/TypeScript - Syntax highlighting only (no LSP)
-if exists('g:enable_phase_5') && g:enable_phase_5
-    " Phase 5: Lazy-load JS/TS plugins
-    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'typescript'] }
-    Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-    Plug 'peitalin/vim-jsx-typescript', { 'for': ['javascript', 'typescript'] }
-    Plug 'maxmellon/vim-jsx-pretty', { 'for': ['javascript', 'typescript'] }
-else
-    Plug 'pangloss/vim-javascript'
-    Plug 'leafgarland/typescript-vim'
-    Plug 'peitalin/vim-jsx-typescript'
-    Plug 'maxmellon/vim-jsx-pretty'
-endif
+Plug 'mfukar/robotframework-vim'
+Plug 'CarloDePieri/vim-pytest'
 
+" Javascrip
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 
-" Phase 1: LSP & Autocomplete - Choose one
-if exists('g:enable_phase_1') && g:enable_phase_1
-    " NEW: vim-lsp (much faster, no Node.js)
-    Plug 'prabirshrestha/vim-lsp'
-    Plug 'mattn/vim-lsp-settings'
-    Plug 'prabirshrestha/asyncomplete.vim'
-    Plug 'prabirshrestha/asyncomplete-lsp.vim'
-else
-    " OLD: CoC (slower, requires Node.js)
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-endif
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
-" AI/Completion
+" Code complete
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'github/copilot.vim'
-" Disabled: vim-ollama (not used, saves startup time)
-" Plug 'gergap/vim-ollama'
+Plug 'gergap/vim-ollama'
 
 " Databricks
 Plug 'kentkr/vim-databricks'
@@ -171,48 +104,17 @@ if vim_plug_just_installed
 endif
 
 " ------------------------------------------------------------------------------
-" PLUGIN CONFIGURATIONS
+" PLUGINS
 " ------------------------------------------------------------------------------
 execute 'source ' . s:vim_dir . '/vimrc_fzf'
-
-" Phase 1: LSP Configuration
-if exists('g:enable_phase_1') && g:enable_phase_1
-    execute 'source ' . s:vim_dir . '/vimrc_lsp'
-else
-    execute 'source ' . s:vim_dir . '/vimrc_coc'
-endif
-
-" Phase 3: ALE Configuration
-if exists('g:enable_phase_3') && g:enable_phase_3
-    " Load optimized ALE config
-    execute 'source ' . s:vim_dir . '/vimrc_ale'
-else
-    " Load old ALE config (will use backup)
-    if filereadable(s:vim_dir . '/vimrc_ale.backup-20260128')
-        execute 'source ' . s:vim_dir . '/vimrc_ale.backup-20260128'
-    else
-        execute 'source ' . s:vim_dir . '/vimrc_ale'
-    endif
-endif
-
+execute 'source ' . s:vim_dir . '/vimrc_coc'
+execute 'source ' . s:vim_dir . '/vimrc_ale'
 execute 'source ' . s:vim_dir . '/vimrc_tagbar'
-
-" Phase 2: Statusline Configuration
-if exists('g:enable_phase_2') && g:enable_phase_2
-    execute 'source ' . s:vim_dir . '/vimrc_lightline'
-else
-    execute 'source ' . s:vim_dir . '/vimrc_airline'
-endif
-
+execute 'source ' . s:vim_dir . '/vimrc_airline'
 execute 'source ' . s:vim_dir . '/vimrc_ultisnippets'
 execute 'source ' . s:vim_dir . '/vimrc_vimwiki'
 execute 'source ' . s:vim_dir . '/vimrc_copilot'
 execute 'source ' . s:vim_dir . '/vimrc_flashcard'
-
-" Phase 4: Databricks Configuration
-if exists('g:enable_phase_4') && g:enable_phase_4
-    execute 'source ' . s:vim_dir . '/vimrc_databricks'
-endif
 
 
 " ------------------------------------------------------------------------------
@@ -277,7 +179,7 @@ set clipboard=unnamed
 
 
 " ------------------------------------------------------------------------------
-" Python Editing
+" Python Edeting
 au BufNewFile,BufRead *.py,*.pyw
     \ setlocal tabstop=4 |
     \ setlocal softtabstop=4 |
@@ -374,12 +276,7 @@ noremap <Leader>ttv :botright vertical terminal ++cols=80<CR>
 noremap <Leader>tt :below terminal ++rows=10<CR>
 
 " Open vim file tree
-nnoremap <leader>f :wincmd v<bar> :Ex <bar> :vertical resize30<CR>
-
-" Phase 5: Lazy-load VimWiki trigger
-if exists('g:enable_phase_5') && g:enable_phase_5
-    nnoremap <leader>ww :VimwikiIndex<CR>
-endif
+nnoremap <leader>f :wincmd v<bar> :Ex <bar> :vertical resize30<CR
 
 " Moving selected text
 "nnoremap <c-k> :m .-2<CR>==
@@ -393,28 +290,3 @@ let g:python3_host_prog='/usr/bin/python3'
 
 
 let g:opencode_model = 'ollama/qwen2.5-coder:7b'
-
-" ------------------------------------------------------------------------------
-" OPTIMIZATION STATUS
-" ------------------------------------------------------------------------------
-" Display which optimizations are enabled
-function! ShowOptimizationStatus()
-    echo "Vim Optimization Status:"
-    echo "========================"
-    echo "Phase 1 (vim-lsp):     " . (exists('g:enable_phase_1') && g:enable_phase_1 ? "✓ ENABLED" : "✗ DISABLED")
-    echo "Phase 2 (lightline):   " . (exists('g:enable_phase_2') && g:enable_phase_2 ? "✓ ENABLED" : "✗ DISABLED")
-    echo "Phase 3 (ALE+ruff):    " . (exists('g:enable_phase_3') && g:enable_phase_3 ? "✓ ENABLED" : "✗ DISABLED")
-    echo "Phase 4 (Databricks):  " . (exists('g:enable_phase_4') && g:enable_phase_4 ? "✓ ENABLED" : "✗ DISABLED")
-    echo "Phase 5 (lazy-load):   " . (exists('g:enable_phase_5') && g:enable_phase_5 ? "✓ ENABLED" : "✗ DISABLED")
-    echo ""
-    echo "Run :PlugInstall to install new plugins"
-    echo "Run :DatabricksHelp for Databricks keybindings"
-endfunction
-
-command! -nargs=0 OptimizationStatus call ShowOptimizationStatus()
-
-" Auto-show status on first startup after optimization
-if exists('g:enable_phase_1') && !exists('g:optimization_status_shown')
-    let g:optimization_status_shown = 1
-    autocmd VimEnter * call timer_start(500, {-> execute('OptimizationStatus')})
-endif

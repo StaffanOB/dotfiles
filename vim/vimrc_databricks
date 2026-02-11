@@ -1,0 +1,307 @@
+" ==============================================================================
+" Databricks Development Configuration
+" ==============================================================================
+
+" --- DATABRICKS SETTINGS ---
+
+" Databricks configuration (from ~/.databrickscfg [DEFAULT] profile)
+let g:databricks_profile = 'DEFAULT'
+
+" Workspace settings
+let g:databricks_host = 'https://adb-7405617670305035.15.azuredatabricks.net/'
+let g:databricks_workspace_dir = '/Workspace/Users/staffan_toor.se#ext#@staffantoor.onmicrosoft.com/.bundle/'
+
+" Cluster ID - You need to set this to your cluster ID
+" Find it in Databricks UI → Compute → Select your cluster → Copy Cluster ID
+" Example: let g:databricks_cluster_id = '0123-456789-abc12345'
+let g:databricks_cluster_id = ''
+
+" --- EXECUTION SETTINGS ---
+
+" Timeout for command execution (milliseconds)
+let g:databricks_execution_timeout = 60000
+
+" Show output automatically after execution
+let g:databricks_auto_show_output = 1
+
+" Output window size
+let g:databricks_output_window_height = 15
+
+" --- KEYBINDINGS ---
+
+" Execute code on Databricks cluster
+" Normal mode: execute entire buffer
+nnoremap <leader>dr :call databricks#main(databricks#get_buffer_text())<CR>
+
+" Visual mode: execute selection
+vnoremap <leader>dr :<C-u>call databricks#main(databricks#get_visual_selection())<CR>
+
+" Execute current paragraph (useful for cell-like development)
+nnoremap <leader>dp vip:<C-u>call databricks#main(databricks#get_visual_selection())<CR>
+
+" View execution output
+nnoremap <leader>do :call DatabricksShowOutput()<CR>
+
+" Clear execution context (reset variables/state)
+nnoremap <leader>dc :call databricks#clear_execution_context()<CR>
+
+" Sync current file to Databricks workspace
+nnoremap <leader>ds :call DatabricksSyncFile()<CR>
+
+" Show cluster status
+nnoremap <leader>di :call DatabricksClusterInfo()<CR>
+
+" --- HELPER FUNCTIONS ---
+
+" Show output in a split window
+function! DatabricksShowOutput() abort
+  " Check if output buffer exists
+  let l:output_bufnr = bufnr('__databricks_output__')
+  
+  if l:output_bufnr == -1
+    " Create new output buffer
+    execute 'botright ' . g:databricks_output_window_height . 'new __databricks_output__'
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal noswapfile
+    setlocal nowrap
+    setlocal filetype=python
+    setlocal syntax=python
+  else
+    " Find window showing output buffer
+    let l:winnr = bufwinnr(l:output_bufnr)
+    
+    if l:winnr == -1
+      " Buffer exists but not visible, show it
+      execute 'botright ' . g:databricks_output_window_height . 'split'
+      execute 'buffer ' . l:output_bufnr
+    else
+      " Window already visible, jump to it
+      execute l:winnr . 'wincmd w'
+    endif
+  endif
+  
+  " Get latest output from vim-databricks
+  " (vim-databricks stores output in a variable)
+  if exists('g:databricks_last_output')
+    setlocal modifiable
+    silent! %delete _
+    call setline(1, split(g:databricks_last_output, '\n'))
+    setlocal nomodifiable
+    normal! gg
+  else
+    echohl WarningMsg
+    echo "No output available. Run code first with <leader>dr"
+    echohl None
+  endif
+endfunction
+
+" Sync current file to Databricks workspace
+function! DatabricksSyncFile() abort
+  if empty(g:databricks_cluster_id)
+    echohl ErrorMsg
+    echo "Error: g:databricks_cluster_id not set in vimrc"
+    echohl None
+    return
+  endif
+  
+  let l:filepath = expand('%:p')
+  let l:filename = expand('%:t')
+  
+  if empty(l:filepath)
+    echohl ErrorMsg
+    echo "Error: No file to sync"
+    echohl None
+    return
+  endif
+  
+  " Construct workspace path
+  let l:workspace_path = g:databricks_workspace_dir . l:filename
+  
+  " Use databricks-cli to sync
+  let l:cmd = printf('databricks workspace import -l python -f SOURCE "%s" "%s" --profile %s',
+        \ l:filepath, l:workspace_path, g:databricks_profile)
+  
+  echo "Syncing to Databricks..."
+  let l:output = system(l:cmd)
+  
+  if v:shell_error == 0
+    echohl Function
+    echo printf("✓ Synced to: %s", l:workspace_path)
+    echohl None
+  else
+    echohl ErrorMsg
+    echo printf("✗ Sync failed: %s", l:output)
+    echohl None
+  endif
+endfunction
+
+" Show cluster information
+function! DatabricksClusterInfo() abort
+  if empty(g:databricks_cluster_id)
+    echohl ErrorMsg
+    echo "Error: g:databricks_cluster_id not set"
+    echohl None
+    return
+  endif
+  
+  " Get cluster info via databricks-cli
+  let l:cmd = printf('databricks clusters get --cluster-id "%s" --profile %s',
+        \ g:databricks_cluster_id, g:databricks_profile)
+  
+  let l:output = system(l:cmd)
+  
+  if v:shell_error == 0
+    " Show in new buffer
+    new __databricks_cluster_info__
+    setlocal buftype=nofile
+    setlocal bufhidden=wipe
+    setlocal noswapfile
+    call setline(1, split(l:output, '\n'))
+    setlocal nomodifiable
+    resize 20
+  else
+    echohl ErrorMsg
+    echo "Failed to get cluster info"
+    echohl None
+  endif
+endfunction
+
+" --- AUTOCOMPLETE CONFIGURATION FOR PYSPARK ---
+
+" Configure vim-lsp to recognize PySpark libraries
+if exists('*lsp#register_server')
+  augroup DatabricksPySpark
+    autocmd!
+    autocmd FileType python call s:setup_pyspark_lsp()
+  augroup END
+  
+  function! s:setup_pyspark_lsp() abort
+    " Only set up for Python files that look like Databricks notebooks
+    " (Check for common Databricks imports or patterns)
+    let l:lines = getline(1, 50)
+    let l:is_databricks = 0
+    
+    for line in l:lines
+      if line =~# '\v(from pyspark|import pyspark|from databricks|import databricks|dbutils|spark\.)'
+        let l:is_databricks = 1
+        break
+      endif
+    endfor
+    
+    if !l:is_databricks
+      return
+    endif
+    
+    " Add PySpark to Python path for better autocomplete
+    " Note: This requires pyspark to be installed locally
+    " pip install pyspark pyspark-stubs
+    
+    " Update LSP settings for this buffer
+    if exists('b:lsp_settings')
+      let b:lsp_settings = {
+            \ 'pyright': {
+            \   'workspace_config': {
+            \     'python': {
+            \       'analysis': {
+            \         'extraPaths': [
+            \           expand('~/.local/lib/python3.*/site-packages/pyspark'),
+            \         ],
+            \         'typeCheckingMode': 'basic',
+            \       }
+            \     }
+            \   }
+            \ }
+            \ }
+    endif
+    
+    " Add common Databricks utilities to autocomplete context
+    " This creates buffer-local snippets/definitions
+    echohl Function
+    echo "Databricks PySpark mode enabled"
+    echohl None
+  endfunction
+endif
+
+" --- FILETYPE DETECTION ---
+
+" Auto-detect Databricks notebook files
+augroup DatabricksFileType
+  autocmd!
+  " .py files in workspace directory are Databricks notebooks
+  autocmd BufRead,BufNewFile */.bundle/*.py setlocal filetype=python.databricks
+  
+  " Enable special highlighting for Databricks magic commands
+  autocmd FileType python.databricks syntax match databricksMagic /^%\w\+/
+  autocmd FileType python.databricks highlight link databricksMagic Special
+augroup END
+
+" --- TEMPLATES ---
+
+" Template for new Databricks notebook
+function! DatabricksNewNotebook() abort
+  let l:template = [
+        \ '# Databricks notebook source',
+        \ '',
+        \ '# COMMAND ----------',
+        \ '',
+        \ '# Import libraries',
+        \ 'from pyspark.sql import SparkSession',
+        \ 'from pyspark.sql.functions import *',
+        \ '',
+        \ '# COMMAND ----------',
+        \ '',
+        \ '# Your code here',
+        \ '',
+        \ ]
+  
+  call setline(1, l:template)
+  setlocal filetype=python.databricks
+endfunction
+
+command! -nargs=0 DatabricksNewNotebook call DatabricksNewNotebook()
+
+" --- SNIPPET-LIKE INSERTIONS ---
+
+" Quick insert cell separator
+nnoremap <leader>d-- o# COMMAND ----------<Esc>
+
+" Quick insert magic command
+nnoremap <leader>d%% o%<Left>
+
+" --- STATUS LINE INTEGRATION ---
+
+" Show Databricks status in statusline
+function! DatabricksStatusLine() abort
+  if &filetype ==# 'python.databricks' || &filetype ==# 'python'
+    if !empty(g:databricks_cluster_id)
+      return ' [DB]'
+    endif
+  endif
+  return ''
+endfunction
+
+" --- NOTES AND DOCUMENTATION ---
+
+" Quick reference for Databricks commands
+command! -nargs=0 DatabricksHelp :echo join([
+      \ "Databricks Keybindings:",
+      \ "  <leader>dr  - Execute code on cluster (buffer/selection)",
+      \ "  <leader>dp  - Execute current paragraph",
+      \ "  <leader>do  - Show execution output",
+      \ "  <leader>dc  - Clear execution context",
+      \ "  <leader>ds  - Sync file to workspace",
+      \ "  <leader>di  - Show cluster info",
+      \ "  <leader>d-- - Insert cell separator",
+      \ "",
+      \ "Setup:",
+      \ "  1. Set g:databricks_cluster_id in vimrc",
+      \ "  2. Configure ~/.databrickscfg with host/token",
+      \ "  3. Install: pip install databricks-sdk pyspark pyspark-stubs",
+      \ ], "\n")
+
+" Show help on first load
+augroup DatabricksWelcome
+  autocmd!
+  autocmd VimEnter * if exists('g:databricks_show_welcome') && g:databricks_show_welcome | call timer_start(1000, {-> execute('DatabricksHelp')}) | endif
+augroup END

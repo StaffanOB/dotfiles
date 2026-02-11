@@ -1,0 +1,165 @@
+" ==============================================================================
+" lightline Configuration (Replaces vim-airline)
+" ==============================================================================
+
+" Enable lightline
+set laststatus=2
+set noshowmode  " Don't show mode in cmdline (lightline shows it)
+
+" --- THEME AND APPEARANCE ---
+
+let g:lightline = {
+      \ 'colorscheme': 'onedark',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified' ],
+      \             [ 'gitbranch' ] ],
+      \   'right': [ [ 'lsp_errors', 'lsp_warnings', 'lsp_ok' ],
+      \              [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'inactive': {
+      \   'left': [ [ 'filename' ] ],
+      \   'right': [ [ 'lineinfo' ],
+      \              [ 'percent' ] ]
+      \ },
+      \ 'component': {
+      \   'lineinfo': '%3l:%-2c',
+      \   'percent': '%3p%%'
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'LightlineGitBranch',
+      \   'filename': 'LightlineFilename',
+      \   'fileformat': 'LightlineFileformat',
+      \   'filetype': 'LightlineFiletype',
+      \   'fileencoding': 'LightlineFileencoding',
+      \   'mode': 'LightlineMode',
+      \ },
+      \ 'component_expand': {
+      \   'lsp_warnings': 'LightlineLspWarnings',
+      \   'lsp_errors': 'LightlineLspErrors',
+      \   'lsp_ok': 'LightlineLspOk'
+      \ },
+      \ 'component_type': {
+      \   'lsp_warnings': 'warning',
+      \   'lsp_errors': 'error',
+      \   'lsp_ok': 'ok'
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '|', 'right': '|' }
+      \ }
+
+" --- COMPONENT FUNCTIONS ---
+
+" Git branch (simple - no dependencies)
+function! LightlineGitBranch()
+  if exists('*FugitiveHead')
+    let l:branch = FugitiveHead()
+    return l:branch !=# '' ? ' ' . l:branch : ''
+  elseif exists('*gitbranch#name')
+    let l:branch = gitbranch#name()
+    return l:branch !=# '' ? ' ' . l:branch : ''
+  else
+    " Fallback: read .git/HEAD directly
+    let l:head = get(systemlist('git rev-parse --abbrev-ref HEAD 2>/dev/null'), 0, '')
+    return l:head !=# '' ? ' ' . l:head : ''
+  endif
+endfunction
+
+" Filename with relative path
+function! LightlineFilename()
+  let l:filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
+  let l:modified = &modified ? ' +' : ''
+  return l:filename . l:modified
+endfunction
+
+" File format (only show if not unix)
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? (&fileformat !=# 'unix' ? &fileformat : '') : ''
+endfunction
+
+" File type
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+
+" File encoding (only show if not utf-8)
+function! LightlineFileencoding()
+  return winwidth(0) > 70 ? (&fileencoding !=# 'utf-8' && &fileencoding !=# '' ? &fileencoding : '') : ''
+endfunction
+
+" Mode (shortened)
+function! LightlineMode()
+  return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+" --- LSP/ALE STATUS INTEGRATION ---
+
+" LSP Errors
+function! LightlineLspErrors() abort
+  if !exists('*lsp#get_buffer_diagnostics_counts')
+    return ''
+  endif
+  
+  let l:counts = lsp#get_buffer_diagnostics_counts(bufnr('%'))
+  let l:errors = get(l:counts, 'error', 0)
+  
+  return l:errors == 0 ? '' : printf('✗ %d', l:errors)
+endfunction
+
+" LSP Warnings
+function! LightlineLspWarnings() abort
+  if !exists('*lsp#get_buffer_diagnostics_counts')
+    return ''
+  endif
+  
+  let l:counts = lsp#get_buffer_diagnostics_counts(bufnr('%'))
+  let l:warnings = get(l:counts, 'warning', 0)
+  
+  return l:warnings == 0 ? '' : printf('⚠ %d', l:warnings)
+endfunction
+
+" LSP OK indicator
+function! LightlineLspOk() abort
+  if !exists('*lsp#get_buffer_diagnostics_counts')
+    return ''
+  endif
+  
+  let l:counts = lsp#get_buffer_diagnostics_counts(bufnr('%'))
+  let l:errors = get(l:counts, 'error', 0)
+  let l:warnings = get(l:counts, 'warning', 0)
+  
+  return l:errors == 0 && l:warnings == 0 ? '✓' : ''
+endfunction
+
+" --- AUTO-UPDATE ON LSP CHANGES ---
+
+" Update lightline when LSP diagnostics change
+" Only set up autocmds if lightline is actually loaded
+if exists('*lightline#update')
+  augroup LightlineLsp
+    autocmd!
+    autocmd User lsp_diagnostics_updated call lightline#update()
+    autocmd BufWritePost * call lightline#update()
+    autocmd CursorHold,CursorHoldI * call lightline#update()
+  augroup END
+endif
+
+" --- PERFORMANCE OPTIMIZATIONS ---
+
+" Cache colorscheme calculations
+let g:lightline#colorscheme#cache = 1
+
+" Only update when necessary
+let g:lightline.enable = {
+      \ 'statusline': 1,
+      \ 'tabline': 0
+      \ }
+
+" --- FALLBACK TO SIMPLE STATUSLINE IF LIGHTLINE NOT LOADED ---
+
+if !exists('*lightline#update')
+  " Minimal statusline if lightline fails to load
+  set statusline=%f\ %m\ %r%=%l:%c\ %p%%
+endif

@@ -165,3 +165,9 @@ export NVM_DIR="$HOME/.nvm"
 
 # Load secrets (API keys, tokens, etc.)
 [ -f "$HOME/.env_secrets" ] && source "$HOME/.env_secrets"
+
+# opencode
+export PATH=/home/staffan/.opencode/bin:$PATH
+
+# NVIM
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"

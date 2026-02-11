@@ -1,0 +1,3 @@
+" Allow vim-ollama to manage Python deps in a venv
+let g:ollama_use_venv = 1
+let g:ollama_venv_path = expand('~/.vim/ollama-venv')

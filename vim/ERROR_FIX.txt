@@ -1,0 +1,117 @@
+================================================================================
+QUICK FIX: lightline#update Error
+================================================================================
+
+ERROR YOU SAW:
+  E117: Unknown function: lightline#update
+
+CAUSE:
+  The new vimrc is trying to use lightline, but the plugin isn't installed yet.
+
+================================================================================
+FIX OPTION 1: Install All Plugins (RECOMMENDED)
+================================================================================
+
+Run the automated installation script:
+
+  cd ~/dotfiles/vim
+  ./install.sh
+
+This will:
+  1. Install Python dependencies (ruff, black, isort)
+  2. Install Vim plugins (vim-lsp, lightline, asyncomplete)
+  3. Verify installation
+  4. Test startup time
+
+Expected time: 5-10 minutes
+
+================================================================================
+FIX OPTION 2: Manual Installation
+================================================================================
+
+1. Install Python dependencies:
+
+   pip install --user ruff black isort
+
+2. Install Vim plugins:
+
+   vim +PlugInstall
+
+   Wait for all plugins to install, then type :q
+
+3. Restart Vim:
+
+   vim
+
+4. When you open a Python file, vim-lsp will prompt:
+   "Install pyright-langserver? [Y/n]"
+   Press 'y'
+
+================================================================================
+FIX OPTION 3: Temporarily Disable Optimizations
+================================================================================
+
+If you want to use Vim NOW without installing new plugins:
+
+1. Edit vimrc:
+
+   vim ~/dotfiles/vim/vimrc
+
+2. Disable all phases (lines 12-26):
+
+   let g:enable_phase_1 = 0
+   let g:enable_phase_2 = 0
+   let g:enable_phase_3 = 0
+   let g:enable_phase_4 = 0
+   let g:enable_phase_5 = 0
+
+3. Save and restart Vim:
+
+   :wq
+   vim
+
+This reverts to your old CoC + vim-airline setup (slow but works).
+
+You can enable phases later after running ./install.sh
+
+================================================================================
+VERIFICATION AFTER FIX
+================================================================================
+
+After installing plugins, verify everything works:
+
+1. Check startup time:
+
+   vim --startuptime /tmp/test.log -c quit
+   tail -1 /tmp/test.log
+
+   Expected: 250-500ms
+
+2. Check optimization status:
+
+   vim
+   :OptimizationStatus
+
+   Should show all phases enabled.
+
+3. Test Python LSP:
+
+   vim test.py
+   # Type some code
+   # Press 'gd' on a function
+   # Should jump to definition
+
+4. No more errors!
+
+================================================================================
+RECOMMENDED ACTION
+================================================================================
+
+Run the installation script:
+
+  cd ~/dotfiles/vim
+  ./install.sh
+
+This is the easiest and safest option.
+
+================================================================================

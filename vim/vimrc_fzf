@@ -1,3 +1,6 @@
 " --- FZF Open fuzzy Searching
 nnoremap <silent> <C-f> :Files<CR>
-let $FZF_DEFAULT_COMMAND='find . \( -name node_modules -o -name .git \) -prune -o -print'
+" Ignore node_modules and .git as well
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden -g "!**/.venv/**" -g "!**/node_modules/**" -g "!**/.git/**"'
+
+

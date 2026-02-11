@@ -11,7 +11,8 @@ alias ivm="pip install -r requirements.txt"
 alias c='clear'
 
 # Editor
-#alias vim='vi'
+alias vim='vi'
+
 
 
 # VPNs
@@ -25,5 +26,4 @@ tm() {
 
 # Apps
 alias inkscape="flatpak run org.inkscape.Inkscape"
-
-
+alias oc="opencode"
