@@ -205,6 +205,21 @@ create_symlink() {
     fi
 }
 
+create_directory() {
+    local directory="$1"
+
+    if [[ -d "$directory" ]]; then
+        return 0
+    fi
+
+    if [[ "$DRY_RUN" == false ]]; then
+        mkdir -p "$directory"
+        echo -e "${GREEN}✓ Created directory: $directory${NC}"
+    else
+        echo -e "${GREEN}✓ Would create directory: $directory${NC}"
+    fi
+}
+
 echo -e "${BLUE}=== Dotfiles Setup ===${NC}\n"
 
 # Check dependencies first
@@ -253,14 +268,14 @@ else
 fi
 
 # FZF configuration (create ~/.config/fzf/ directory structure)
-mkdir -p "$HOME/.config/fzf"
+create_directory "$HOME/.config/fzf"
 create_symlink "$SCRIPT_DIR/shell/fzf/config.bash" "$HOME/.config/fzf/config.bash"
 create_symlink "$SCRIPT_DIR/shell/fzf/key-bindings.bash" "$HOME/.config/fzf/key-bindings.bash"
 echo
 
 # Alacritty
 echo -e "${BLUE}Alacritty:${NC}"
-mkdir -p "$HOME/.config/alacritty"
+create_directory "$HOME/.config/alacritty"
 create_symlink "$SCRIPT_DIR/alacritty/alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
 echo
 

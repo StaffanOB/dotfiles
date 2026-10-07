@@ -133,7 +133,11 @@ fi
 
 
 # Default editor
-export EDITOR=nvim
+if command -v nvim > /dev/null 2>&1; then
+    export EDITOR=nvim
+else
+    export EDITOR=vim
+fi
 export NOTES=~/Documents/notes
 
 # set defautl audio device to hdmi
@@ -174,6 +178,6 @@ export PATH=/home/staffan/.opencode/bin:$PATH
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 [ -f "/home/staffan/.ghcup/env" ] && . "/home/staffan/.ghcup/env" # ghcup-env
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # End of LM Studio CLI section
