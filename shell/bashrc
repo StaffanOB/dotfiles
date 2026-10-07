@@ -132,17 +132,6 @@ if ! shopt -oq posix; then
 fi
 
 
-# Default editor
-if command -v nvim > /dev/null 2>&1; then
-    export EDITOR=nvim
-else
-    export EDITOR=vim
-fi
-export NOTES=~/Documents/notes
-
-# set defautl audio device to hdmi
-#pactl set-default-sink alsa_output.pci-0000_02_00.1.hdmi-stereo-extra1
-
 # FZF - Fuzzy finder
 [ -f ~/.config/fzf/config.bash ] && source ~/.config/fzf/config.bash
 
@@ -160,6 +149,23 @@ export OLLAMA_HOST=http://localhost:11434
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
+# OpenCode
+[ -d "$HOME/.opencode/bin" ] && export PATH="$HOME/.opencode/bin:$PATH"
+
+# Neovim
+[ -d "/opt/nvim-linux-x86_64/bin" ] && export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+
+# Default editor
+if command -v nvim > /dev/null 2>&1; then
+    export EDITOR=nvim
+else
+    export EDITOR=vim
+fi
+export NOTES=~/Documents/notes
+
+# set defautl audio device to hdmi
+#pactl set-default-sink alsa_output.pci-0000_02_00.1.hdmi-stereo-extra1
+
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -171,13 +177,7 @@ export NVM_DIR="$HOME/.nvm"
 # Load secrets (API keys, tokens, etc.)
 [ -f "$HOME/.env_secrets" ] && source "$HOME/.env_secrets"
 
-# opencode
-export PATH=/home/staffan/.opencode/bin:$PATH
-
-# NVIM
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
-
-[ -f "/home/staffan/.ghcup/env" ] && . "/home/staffan/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # End of LM Studio CLI section

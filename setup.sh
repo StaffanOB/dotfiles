@@ -118,18 +118,10 @@ check_dependencies() {
             if [[ "$INSTALL_DEPS" == true ]]; then
                 install_dependencies "${missing_required[@]}"
             else
-                echo -e "${YELLOW}Run with --install-deps flag to install automatically${NC}"
-                echo -e "${YELLOW}Or manually install with:${NC}"
+                echo -e "${YELLOW}Run with --install-deps to install automatically${NC}"
+                echo -e "${YELLOW}Or install manually with:${NC}"
                 echo -e "  sudo apt update && sudo apt install -y ${missing_required[*]}"
-                echo
-                read -p "Install missing dependencies now? (y/N): " -n 1 -r
-                echo
-                if [[ $REPLY =~ ^[Yy]$ ]]; then
-                    install_dependencies "${missing_required[@]}"
-                else
-                    echo -e "${RED}Cannot proceed without required dependencies${NC}"
-                    exit 1
-                fi
+                exit 1
             fi
         else
             echo -e "${RED}Not running on Debian/Ubuntu. Please install dependencies manually.${NC}"

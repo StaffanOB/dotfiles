@@ -16,6 +16,7 @@ thumbs.db
 *.swo
 *~
 .netrwhist
+viminfo
 
 # Vim undo/backup directories (in case they leak here)
 undos/

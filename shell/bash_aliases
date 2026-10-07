@@ -12,7 +12,7 @@ alias c='clear'
 
 # Editor
 alias vim='vi'
-alias nv='/opt/nvim-linux-x86_64/bin/nvim'
+alias nv='nvim'
 
 
 

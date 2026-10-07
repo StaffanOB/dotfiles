@@ -29,9 +29,9 @@ fi
 # Set background
 #feh --bg-fill ~/.config/i3/background-desktop.png
 
-[ -f "/home/staffan/.ghcup/env" ] && . "/home/staffan/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/home/staffan/.lmstudio/bin"
+[ -d "$HOME/.lmstudio/bin" ] && export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
