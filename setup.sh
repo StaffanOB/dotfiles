@@ -246,6 +246,11 @@ create_symlink "$SCRIPT_DIR/shell/profile" "$HOME/.profile"
 create_symlink "$SCRIPT_DIR/shell/Xresources" "$HOME/.Xresources"
 create_symlink "$SCRIPT_DIR/shell/fdignore" "$HOME/.fdignore"
 create_symlink "$SCRIPT_DIR/shell/bash_zoxide" "$HOME/.bash_zoxide"
+if [[ -f "$SCRIPT_DIR/shell/env_secrets" ]]; then
+    create_symlink "$SCRIPT_DIR/shell/env_secrets" "$HOME/.env_secrets"
+else
+    echo -e "${YELLOW}! No local secrets file found; skipping $HOME/.env_secrets${NC}"
+fi
 
 # FZF configuration (create ~/.config/fzf/ directory structure)
 mkdir -p "$HOME/.config/fzf"
